@@ -5,17 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ring Status</title>
-    <style>
-        /* Add your CSS here */
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <div class="ring-container">
-        <!-- Ring elements go here -->
+        <!-- These are the clickable ring squares -->
+        <div id="ring1" class="ring">
+            <div class="ring-number">1</div>
+            <div class="timestamp"></div>
+        </div>
+        <div id="ring2" class="ring">
+            <div class="ring-number">2</div>
+            <div class="timestamp"></div>
+        </div>
+        <div id="ring3" class="ring">
+            <div class="ring-number">3</div>
+            <div class="timestamp"></div>
+        </div>
+        <!-- Continue adding rings as necessary, up to 28 rings -->
     </div>
 
-    <!-- Modal -->
+    <!-- Modal for selecting ring status -->
     <div class="modal" id="myModal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -30,7 +41,6 @@
         </div>
     </div>
 
-    <!-- Link to the external JavaScript file -->
     <script src="script.js"></script>
 </body>
 
