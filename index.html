@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ring Status App</title>
+    <style>
+        .ring {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            display: inline-block;
+            margin: 5px;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="rings-container"></div>
+
+    <script>
+        const BASE_URL = 'YOUR_WEB_APP_URL'; // Replace with your web app URL
+
+        // Fetch all ring data
+        async function fetchRingData() {
+            const response = await fetch(`${BASE_URL}`);
+            const data = await response.json();
+            renderRings(data);
+        }
+
+        // Render rings on the page
+        function renderRings(rings) {
+            const container = document.getElementById('rings-container');
+            container.innerHTML = '';
+            rings.forEach((ring, index) => {
+                const ringDiv = document.createElement('div');
+                ringDiv.className = 'ring';
+                ringDiv.style.backgroundColor = ring[2]; // Set the color based on the data
+                ringDiv.textContent = ring[0]; // Display the Ring ID
+                ringDiv.onclick = () => updateRing(index, prompt("Enter status:")); // Open prompt to update status
+                container.appendChild(ringDiv);
+            });
+        }
+
+        // Update a specific ring status
+        async function updateRing(ringId, status) {
+            const color = status === 'Open' || status === 'Extreme' ? 'green' : 'orange';
+            await fetch(`${BASE_URL}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    ringId: ringId,
+                    status: status,
+                    color: color,
+                }),
+            });
+            fetchRingData(); // Refresh the data after updating
+        }
+
+        // Initial fetch to display the rings
+        fetchRingData();
+    </script>
+</body>
+</html>
