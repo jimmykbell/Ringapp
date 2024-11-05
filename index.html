@@ -1,36 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Martial Arts Ring Status</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="index.js" defer></script>
+    <title>Ring Status</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Styling for the ring container (grid of rings) */
+        .ring-container {
+            display: grid;
+            grid-template-columns: repeat(7, 100px);
+            grid-template-rows: repeat(4, 100px);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Styling for each individual ring */
+        .ring {
+            width: 100px;
+            height: 100px;
+            background-color: lightgray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .ring-number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .status-text {
+            font-size: 12px;
+            margin-top: 5px;
+            text-transform: capitalize;
+        }
+
+        .timestamp {
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        /* Status-based colors */
+        .ring.open,
+        .ring.extreme {
+            background-color: green;
+        }
+
+        .ring.forms,
+        .ring.weapons,
+        .ring.combat,
+        .ring.sparring,
+        .ring.creative {
+            background-color: orange;
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .status-option {
+            margin: 10px 0;
+            cursor: pointer;
+            padding: 5px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .status-option:hover {
+            background-color: #ddd;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
+    <div class="ring-container">
+        <!-- Each ring square -->
+        <div class="ring" id="ring1">
+            <div class="ring-number"></div>
+            <div class="status-text"></div>
+            <div class="timestamp"></div>
+        </div>
+        <div class="ring" id="ring2">
+            <div class="ring-number"></div>
+            <div class="status-text"></div>
+            <div class="timestamp"></div>
+        </div>
+        <div class="ring" id="ring3">
+            <div class="ring-number"></div>
+            <div class="status-text"></div>
+            <div class="timestamp"></div>
+        </div>
+        <div class="ring" id="ring4">
+            <div class="ring-number"></div>
+            <div class="status-text"></div>
+            <div class="timestamp"></div>
+        </div>
+        <div class="ring" id="ring5">
+            <div class="ring-number"></div>
+            <div class="status-text"></div>
+            <div class="timestamp"></div>
+        </div>
+        <div class="ring" id="ring6">
+            <div class="ring-number"></div>
+            <div class="status-text"></div>
+            <div class="timestamp"></div>
+        </div>
+        <div class="ring" id="ring7">
+            <div class="ring-number"></div>
+            <div class="status-text"></div>
+            <div class="timestamp"></div>
+        </div>
+        <!-- Repeat for all 28 rings -->
+    </div>
 
-    <!-- Container for the rings -->
-   <div class="ring" id="ring1">
-    <div class="ring-number"></div>
-    <div class="status-text"></div> <!-- Status of the ring -->
-    <div class="timestamp"></div>   <!-- Timestamp of when it was last checked -->
-</div>
-
-
-    <!-- Modal for selecting the status of a ring -->
-    <div id="statusModal" class="modal">
+    <!-- Modal for selecting status -->
+    <div class="modal" id="myModal">
         <div class="modal-content">
-            <span id="closeModal" class="close">&times;</span>
-            <h3>Select Status</h3>
-            <button class="status-option" data-status="open">Open</button>
-            <button class="status-option" data-status="forms">Forms</button>
-            <button class="status-option" data-status="weapons">Weapons</button>
-            <button class="status-option" data-status="combat">Combat</button>
-            <button class="status-option" data-status="sparring">Sparring</button>
-            <button class="status-option" data-status="creative">Creative</button>
-            <button class="status-option" data-status="extreme">Extreme</button>
+            <span class="close">&times;</span>
+            <div class="modal-header">Select Status</div>
+            <div class="status-option" data-status="open">Open</div>
+            <div class="status-option" data-status="extreme">Extreme</div>
+            <div class="status-option" data-status="forms">Forms</div>
+            <div class="status-option" data-status="weapons">Weapons</div>
+            <div class="status-option" data-status="combat">Combat</div>
+            <div class="status-option" data-status="sparring">Sparring</div>
+            <div class="status-option" data-status="creative">Creative</div>
         </div>
     </div>
 
+    <script>
+        // Initialize the ring status data
+        const ringStatuses = {
+            ring1: { status: 'open', lastChecked: '' },
+            ring2: { status: 'open', lastChecked: '' },
+            ring3: { status: 'open', lastChecked: '' },
+            ring4: { status: 'open', lastChecked: '' },
+            ring5: { status: 'open', lastChecked: '' },
+            ring6: { status: 'open', lastChecked: '' },
+            ring7: { status: 'open', lastChecked: '' },
+            // Add more rings as necessary
+        };
+
+        // Function to update ring status and time
+        function updateRingStatus(ringId, status) {
+            const ring = document.getElementById(ringId);
+            const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Only the time (HH:MM)
+
+            // Update the ring's status class and timestamp
+            ring.classList.remove('open', 'extreme', 'forms', 'weapons', 'combat', 'sparring', 'creative');
+            ring.classList.add(status);
+
+            // Update the ring number, status, and timestamp in the square
+            ring.querySelector('.ring-number').textContent = ringId.replace('ring', ''); // Ring number
+            ring.querySelector('.status-text').textContent = status.charAt(0).toUpperCase() + status.slice(1); // Status (capitalized)
+            ring.querySelector('.timestamp').textContent = currentTime; // Time only (no date)
+
+            // Update the JSON object with the current time
+            ringStatuses[ringId].status = status;
+            ringStatuses[ringId].lastChecked = currentTime; // Save the current time
+        }
+
+        // Function to open the modal and allow status change
+        function openModal(ringId) {
+            const modal = document.getElementById('myModal');
+            const statusButtons = modal.querySelectorAll('.status-option');
+            
+            // Set up click event for each status button
+            statusButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const status = button.getAttribute('data-status');
+                    updateRingStatus(ringId, status); // Update the status and time
+                    modal.style.display = 'none'; // Close the modal after selection
+                });
+            });
+
+            modal.style.display = 'flex'; // Show the modal
+        }
+
+        // Close the modal when the close button is clicked
+        document.querySelector('.close').addEventListener('click', function () {
+            document.getElementById('myModal').style.display = 'none'; // Close the modal
+        });
+
+        // Add event listeners for all rings (you can add more rings if needed)
+        document.querySelectorAll('.ring').forEach(ring => {
+            ring.addEventListener('click', function () {
+                const ringId = ring.id; // Get the ring id
+                openModal(ringId); // Open the modal for the clicked ring
+            });
+        });
+    </script>
 </body>
+
 </html>
