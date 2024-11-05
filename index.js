@@ -17,8 +17,9 @@ function updateRingStatus(ringId, status) {
     ring.classList.remove('open', 'extreme', 'forms', 'weapons', 'combat', 'sparring', 'creative');
     ring.classList.add(status);
 
-    // Update the ring number and timestamp in the square
+    // Update the ring number, status, and timestamp in the square
     ring.querySelector('.ring-number').textContent = ringId.replace('ring', ''); // Ring number
+    ring.querySelector('.status-text').textContent = status.charAt(0).toUpperCase() + status.slice(1); // Status (capitalized)
     ring.querySelector('.timestamp').textContent = currentTime; // Time only (no date)
 
     // Update the JSON object with the current time
