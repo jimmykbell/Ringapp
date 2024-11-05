@@ -36,8 +36,9 @@ statusButtons.forEach(button => {
         const status = button.getAttribute("data-status");
         
         // Update the ring's text and color based on status
-        selectedRing.textContent = status; // Update the ring text
+        selectedRing.querySelector(".ring-number").textContent = selectedRing.querySelector(".ring-number").textContent; // Keep the ring number
         selectedRing.style.backgroundColor = getColorByStatus(status); // Change color based on status
+        selectedRing.querySelector(".timestamp").textContent = `Last checked: ${getTime()}`; // Add timestamp
 
         modal.style.display = "none"; // Close the modal
     });
@@ -52,11 +53,17 @@ function getColorByStatus(status) {
         case "Forms":
         case "Weapons":
         case "Combat":
-            return "orange";
+            return "red";
         case "Sparring":
         case "Creative":
-            return "lightblue"; // Different color for Sparring and Creative
+            return "orange";
         default:
             return "white"; // Default color
     }
+}
+
+// Function to get the current time
+function getTime() {
+    const now = new Date();
+    return now.toLocaleTimeString(); // Get time in HH:MM:SS format
 }
