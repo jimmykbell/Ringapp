@@ -2,8 +2,9 @@
 
 let selectedRing;
 
-// Get the modal
+// Get the modal and the close button
 const modal = document.getElementById("modal");
+const closeModal = document.getElementsByClassName("close")[0];
 
 // Get the rings
 const rings = document.querySelectorAll(".ring");
@@ -17,7 +18,6 @@ rings.forEach(ring => {
 });
 
 // When the user clicks on <span> (x), close the modal
-const closeModal = document.getElementsByClassName("close")[0];
 closeModal.onclick = function() {
     modal.style.display = "none";
 }
