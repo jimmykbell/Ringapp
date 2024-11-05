@@ -3,105 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Martial Arts Ring Status</title>
+    <title>Martial Arts Rings</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        .rings-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
         }
         .ring {
-            width: 100px;
-            height: 100px;
-            display: inline-block;
-            margin: 5px;
-            border: 2px solid #000;
+            width: 80px;
+            height: 80px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid black;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
-        .green {
-            background-color: green;
+        .open {
+            background-color: lightgreen;
         }
-        .orange {
+        .forms {
             background-color: orange;
         }
-        .default {
-            background-color: lightgray;
+        .sparring {
+            background-color: coral;
         }
     </style>
 </head>
 <body>
-    <h1>Martial Arts Ring Status</h1>
-    <div class="rings-container" id="rings"></div>
+    <div id="rings"></div>
 
-    <script>
-        // Fetch the JSON data
-        fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                const ringsContainer = document.getElementById('rings');
-                data.rings.forEach(ring => {
-                    const ringDiv = document.createElement('div');
-                    ringDiv.className = 'ring default';
-                    ringDiv.textContent = ring.id;
-                    ringDiv.setAttribute('data-status', ring.status);
-                    ringDiv.setAttribute('data-last-checked', ring.lastChecked);
-                    ringDiv.onclick = () => updateStatus(ringDiv);
-                    ringsContainer.appendChild(ringDiv);
-                });
-            })
-            .catch(error => console.error('Error fetching data:', error));
-
-        // Function to update the status of a ring
-        function updateStatus(ring) {
-            const currentStatus = ring.getAttribute('data-status');
-            const timestamp = new Date().toLocaleString();
-            ring.setAttribute('data-last-checked', timestamp);
-            ring.innerHTML = `Last checked: ${timestamp}`;
-            
-            if (currentStatus === 'open' || currentStatus === 'extreme') {
-                ring.className = 'ring green';
-            } else if (currentStatus === 'forms' || currentStatus === 'weapons' || currentStatus === 'combat' || currentStatus === 'sparring' || currentStatus === 'creative') {
-                ring.className = 'ring orange';
-            }
-            // Cycle through statuses for demonstration purposes
-            switch (currentStatus) {
-                case 'open':
-                    ring.setAttribute('data-status', 'forms');
-                    break;
-                case 'forms':
-                    ring.setAttribute('data-status', 'weapons');
-                    break;
-                case 'weapons':
-                    ring.setAttribute('data-status', 'combat');
-                    break;
-                case 'combat':
-                    ring.setAttribute('data-status', 'sparring');
-                    break;
-                case 'sparring':
-                    ring.setAttribute('data-status', 'creative');
-                    break;
-                case 'creative':
-                    ring.setAttribute('data-status', 'extreme');
-                    break;
-                case 'extreme':
-                    ring.setAttribute('data-status', 'open');
-                    break;
-                default:
-                    ring.setAttribute('data-status', 'open');
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
