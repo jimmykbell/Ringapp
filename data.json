@@ -1,7 +1,32 @@
 {
     "rings": [
-        { "id": "ring1", "status": "open", "lastChecked": "" },
-        { "id": "ring2", "status": "forms", "lastChecked": "" },
-        { "id": "ring3", "status": "sparring", "lastChecked": "" }
+        { "id": "Ring 1", "status": "open", "lastChecked": "" },
+        { "id": "Ring 2", "status": "open", "lastChecked": "" },
+        { "id": "Ring 3", "status": "open", "lastChecked": "" },
+        { "id": "Ring 4", "status": "open", "lastChecked": "" },
+        { "id": "Ring 5", "status": "open", "lastChecked": "" },
+        { "id": "Ring 6", "status": "open", "lastChecked": "" },
+        { "id": "Ring 7", "status": "open", "lastChecked": "" },
+        { "id": "Ring 8", "status": "open", "lastChecked": "" },
+        { "id": "Ring 9", "status": "open", "lastChecked": "" },
+        { "id": "Ring 10", "status": "open", "lastChecked": "" },
+        { "id": "Ring 11", "status": "open", "lastChecked": "" },
+        { "id": "Ring 12", "status": "open", "lastChecked": "" },
+        { "id": "Ring 13", "status": "open", "lastChecked": "" },
+        { "id": "Ring 14", "status": "open", "lastChecked": "" },
+        { "id": "Ring 15", "status": "open", "lastChecked": "" },
+        { "id": "Ring 16", "status": "open", "lastChecked": "" },
+        { "id": "Ring 17", "status": "open", "lastChecked": "" },
+        { "id": "Ring 18", "status": "open", "lastChecked": "" },
+        { "id": "Ring 19", "status": "open", "lastChecked": "" },
+        { "id": "Ring 20", "status": "open", "lastChecked": "" },
+        { "id": "Ring 21", "status": "open", "lastChecked": "" },
+        { "id": "Ring 22", "status": "open", "lastChecked": "" },
+        { "id": "Ring 23", "status": "open", "lastChecked": "" },
+        { "id": "Ring 24", "status": "open", "lastChecked": "" },
+        { "id": "Ring 25", "status": "open", "lastChecked": "" },
+        { "id": "Ring 26", "status": "open", "lastChecked": "" },
+        { "id": "Ring 27", "status": "open", "lastChecked": "" },
+        { "id": "Ring 28", "status": "open", "lastChecked": "" }
     ]
 }
