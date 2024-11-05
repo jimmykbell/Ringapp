@@ -1,116 +1,88 @@
-/* Container for rings, displayed as a grid */
-#rings {
+/* General styles for the page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ring container to display rings in a grid */
+.ring-container {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columns in the grid */
-    gap: 15px; /* Increased space between each ring */
-    max-width: 100%; /* For responsiveness */
-    padding: 10px;
-}
-
-/* Styling each individual ring */
-.ring {
-    width: 80px; /* Increased square size */
-    height: 80px; /* Increased square size */
-    display: flex;
-    flex-direction: column; /* Stack the number and time vertically */
-    align-items: center;
-    justify-content: center;
-    font-size: 20px; /* Larger font for the ring number */
-    color: #fff; /* Text color */
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s; /* Smooth color transition */
-    text-align: center; /* Center the text */
-    overflow: hidden; /* Ensures text doesn't overflow */
-}
-
-/* Styling for the ring number */
-.ring .ring-number {
-    font-size: 24px; /* Larger number font */
-}
-
-/* Styling for the timestamp */
-.ring .timestamp {
-    font-size: 10px; /* Smaller timestamp font */
-    margin-top: 5px; /* Space between number and time */
-}
-
-/* Status-based colors */
-.ring.open,
-.ring.extreme {
-    background-color: green;
-}
-
-.ring.forms,
-.ring.weapons,
-.ring.combat,
-.ring.sparring,
-.ring.creative {
-    background-color: orange;
-}
-
-/* Modal background styling */
-.modal {
-    display: none; /* Initially hidden */
-    position: fixed;
-    z-index: 1000; /* Ensures modal is above other elements */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    align-items: center; /* Center content vertically */
-    justify-content: center; /* Center content horizontally */
-}
-
-/* Modal content box styling */
-.modal-content {
-    background-color: white;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns */
+    gap: 10px;
     padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 300px;
+}
+
+/* Ring squares */
+.ring {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: #ddd;
+    border-radius: 10px;
+    cursor: pointer;
     text-align: center;
     position: relative;
 }
 
-/* Close button for modal */
+/* Ring numbers */
+.ring-number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Time displayed below the ring number */
+.timestamp {
+    font-size: 0.75rem;
+    position: absolute;
+    bottom: 5px;
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal-header {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+}
+
+.status-option {
+    margin: 10px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.status-option:hover {
+    background-color: #ddd;
+}
+
 .close {
     position: absolute;
-    right: 10px;
     top: 10px;
-    font-size: 20px;
+    right: 10px;
+    font-size: 2rem;
     cursor: pointer;
-}
-
-/* Status option buttons inside modal */
-.status-option {
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
-    width: 100%;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    text-transform: capitalize;
-}
-
-.status-option[data-status="open"],
-.status-option[data-status="extreme"] {
-    background-color: green;
-}
-
-.status-option[data-status="forms"],
-.status-option[data-status="weapons"],
-.status-option[data-status="combat"],
-.status-option[data-status="sparring"],
-.status-option[data-status="creative"] {
-    background-color: orange;
-}
-
-/* Add hover effect for buttons */
-.status-option:hover {
-    opacity: 0.8;
 }
