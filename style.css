@@ -2,23 +2,37 @@
 #rings {
     display: grid;
     grid-template-columns: repeat(7, 1fr); /* 7 columns in the grid */
-    gap: 10px; /* Space between each ring */
+    gap: 15px; /* Increased space between each ring */
     max-width: 100%; /* For responsiveness */
     padding: 10px;
 }
 
 /* Styling each individual ring */
 .ring {
-    width: 60px;
-    height: 60px;
+    width: 80px; /* Increased square size */
+    height: 80px; /* Increased square size */
     display: flex;
+    flex-direction: column; /* Stack the number and time vertically */
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 20px; /* Larger font for the ring number */
     color: #fff; /* Text color */
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 8px;
     transition: background-color 0.3s; /* Smooth color transition */
+    text-align: center; /* Center the text */
+    overflow: hidden; /* Ensures text doesn't overflow */
+}
+
+/* Styling for the ring number */
+.ring .ring-number {
+    font-size: 24px; /* Larger number font */
+}
+
+/* Styling for the timestamp */
+.ring .timestamp {
+    font-size: 10px; /* Smaller timestamp font */
+    margin-top: 5px; /* Space between number and time */
 }
 
 /* Status-based colors */
@@ -47,7 +61,6 @@
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     align-items: center; /* Center content vertically */
     justify-content: center; /* Center content horizontally */
-    display: none; /* Ensure it's hidden initially */
 }
 
 /* Modal content box styling */
