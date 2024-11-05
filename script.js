@@ -1,52 +1,62 @@
-// Initialize the ring status data (all rings start as "open")
-const ringStatuses = {};
-for (let i = 1; i <= 28; i++) {
-    ringStatuses[`ring${i}`] = { status: 'open', lastChecked: '' };
-}
+// script.js
 
-// Function to update the ring status and timestamp
-function updateRingStatus(ringId, status) {
-    const ring = document.getElementById(ringId);
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Time only (HH:MM)
+let selectedRing;
 
-    // Update the ring's status class and timestamp
-    ring.classList.remove('open', 'extreme', 'forms', 'weapons', 'combat', 'sparring', 'creative');
-    ring.classList.add(status);
+// Get the modal
+const modal = document.getElementById("modal");
 
-    // Update the ring number and status in the square
-    ring.querySelector('.ring-number').textContent = ringId.replace('ring', ''); // Ring number
-    ring.querySelector('.timestamp').textContent = currentTime; // Time only
+// Get the rings
+const rings = document.querySelectorAll(".ring");
 
-    // Save the current time to the ringStatuses object
-    ringStatuses[ringId].status = status;
-    ringStatuses[ringId].lastChecked = currentTime;
-}
-
-// Function to open the modal when a ring is clicked
-function openModal(ringId) {
-    const modal = document.getElementById('myModal');
-    const statusButtons = modal.querySelectorAll('.status-option');
-
-    // Set up click event for each status button
-    statusButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const status = button.getAttribute('data-status');
-            updateRingStatus(ringId, status); // Update the ring status and timestamp
-            modal.style.display = 'none'; // Close the modal after selection
-        });
+// When a ring is clicked, open the modal
+rings.forEach(ring => {
+    ring.addEventListener("click", () => {
+        selectedRing = ring;
+        modal.style.display = "block"; // Show the modal
     });
-
-    modal.style.display = 'flex'; // Show the modal
-}
-
-// Close the modal when the close button is clicked
-document.querySelector('.close').addEventListener('click', function () {
-    document.getElementById('myModal').style.display = 'none'; // Close the modal
 });
 
-// Add event listeners for all rings (28 rings in total)
-for (let i = 1; i <= 28; i++) {
-    document.getElementById(`ring${i}`).addEventListener('click', function () {
-        openModal(`ring${i}`); // Open the modal for the clicked ring
+// When the user clicks on <span> (x), close the modal
+const closeModal = document.getElementsByClassName("close")[0];
+closeModal.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Handle status button clicks
+const statusButtons = document.querySelectorAll(".status-button");
+statusButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        const status = button.getAttribute("data-status");
+        
+        // Update the ring's text and color based on status
+        selectedRing.textContent = status; // Update the ring text
+        selectedRing.style.backgroundColor = getColorByStatus(status); // Change color based on status
+
+        modal.style.display = "none"; // Close the modal
     });
+});
+
+// Function to get color by status
+function getColorByStatus(status) {
+    switch (status) {
+        case "Open":
+        case "Extreme":
+            return "green";
+        case "Forms":
+        case "Weapons":
+        case "Combat":
+            return "orange";
+        case "Sparring":
+        case "Creative":
+            return "lightblue"; // Different color for Sparring and Creative
+        default:
+            return "white"; // Default color
+    }
 }
