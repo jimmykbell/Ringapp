@@ -18,27 +18,16 @@ body {
 
 .ring {
     background-color: #ffffff; /* Default background color */
-    border: 2px solid #ccc; /* Border color */
-    border-radius: 8px; /* Rounded corners */
+    border: 2px solid black; /* Black border around each square */
+    border-radius: 8px; /* Optional rounded corners */
     display: flex;
-    flex-direction: column;
     justify-content: center; /* Center content vertically */
     align-items: center; /* Center content horizontally */
-    padding: 20px;
     height: 80px; /* Fixed height for each square */
+    font-size: 24px; /* Font size for the number */
+    font-weight: bold; /* Bold font for the number */
     cursor: pointer; /* Cursor changes to pointer on hover */
     transition: background-color 0.3s; /* Smooth background color transition */
-}
-
-.ring-number {
-    font-size: 24px; /* Ring number font size */
-    font-weight: bold; /* Bold font for the number */
-}
-
-.timestamp {
-    font-size: 14px; /* Font size for timestamp */
-    margin-top: 5px; /* Space above the timestamp */
-    color: #555; /* Dark gray color for timestamp */
 }
 
 .ring:hover {
