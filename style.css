@@ -39,18 +39,20 @@
 .modal {
     display: none; /* Hidden by default */
     position: fixed;
-    z-index: 1000;
+    z-index: 1000; /* Ensures modal is above other elements */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    display: flex;
 }
 
 /* Modal content box styling */
 .modal-content {
     background-color: white;
-    margin: 15% auto;
     padding: 20px;
     border-radius: 8px;
     width: 80%;
@@ -93,4 +95,9 @@
 .status-option[data-status="sparring"],
 .status-option[data-status="creative"] {
     background-color: orange;
+}
+
+/* Add hover effect for buttons */
+.status-option:hover {
+    opacity: 0.8;
 }
