@@ -14,6 +14,7 @@
     border: 2px solid black; /* Black border around each square */
     border-radius: 8px; /* Rounded corners */
     display: flex;
+    flex-direction: column; /* Stack text vertically */
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
     width: 100px; /* Fixed width for each square */
@@ -22,6 +23,18 @@
     font-weight: bold; /* Bold font for the number */
     cursor: pointer; /* Cursor changes to pointer on hover */
     transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+/* Ring number style */
+.ring-number {
+    font-size: 20px;
+}
+
+/* Timestamp for last checked */
+.time-stamp {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
 }
 
 /* Modal styles */
