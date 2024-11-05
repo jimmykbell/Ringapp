@@ -23,13 +23,13 @@ body {
     display: flex;
     justify-content: center; /* Center content vertically */
     align-items: center; /* Center content horizontally */
-    height: 80px; /* Fixed height for each square */
+    width: 100px; /* Fixed width for each square */
+    height: 100px; /* Fixed height for each square */
     font-size: 24px; /* Font size for the number */
     font-weight: bold; /* Bold font for the number */
     cursor: pointer; /* Cursor changes to pointer on hover */
     transition: background-color 0.3s; /* Smooth background color transition */
 }
-
 .ring:hover {
     background-color: #f9f9f9; /* Light background on hover */
 }
