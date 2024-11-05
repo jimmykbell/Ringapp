@@ -1,69 +1,39 @@
-// script.js
+document.querySelectorAll('.status-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const status = button.getAttribute('data-status');
+        const ring = document.querySelector('.active-ring');
+        const timestampElement = ring.querySelector('.timestamp');
 
-let selectedRing;
+        let ringColor;
+        // Get current time, formatted to show hours and minutes only
+        const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-// Get the modal and the close button
-const modal = document.getElementById("modal");
-const closeModal = document.getElementsByClassName("close")[0];
+        switch (status) {
+            case 'Open':
+            case 'Extreme':
+                ringColor = 'green';
+                break;
+            case 'Forms':
+            case 'Weapons':
+            case 'Combat':
+                ringColor = 'red';
+                break;
+            case 'Sparring':
+            case 'Creative':
+                ringColor = 'orange';
+                break;
+            default:
+                ringColor = 'gray'; // Default color for undefined statuses
+                break;
+        }
 
-// Get the rings
-const rings = document.querySelectorAll(".ring");
+        // Change the ring's background color based on the selected status
+        ring.style.backgroundColor = ringColor;
 
-// When a ring is clicked, open the modal
-rings.forEach(ring => {
-    ring.addEventListener("click", () => {
-        selectedRing = ring;
-        modal.style.display = "block"; // Show the modal
+        // Update the timestamp text to display only the time (hours and minutes)
+        timestampElement.textContent = `Checked: ${currentTime}`;
+
+        // Close the modal after a selection
+        document.getElementById('modal').style.display = 'none';
     });
 });
-
-// When the user clicks on <span> (x), close the modal
-closeModal.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
-}
-
-// Handle status button clicks
-const statusButtons = document.querySelectorAll(".status-button");
-statusButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        const status = button.getAttribute("data-status");
-        
-        // Update the ring's text and color based on status
-        selectedRing.querySelector(".ring-number").textContent = selectedRing.querySelector(".ring-number").textContent; // Keep the ring number
-        selectedRing.style.backgroundColor = getColorByStatus(status); // Change color based on status
-        selectedRing.querySelector(".timestamp").textContent = `Last checked: ${getTime()}`; // Add timestamp
-
-        modal.style.display = "none"; // Close the modal
-    });
-});
-
-// Function to get color by status
-function getColorByStatus(status) {
-    switch (status) {
-        case "Open":
-        case "Extreme":
-            return "green";
-        case "Forms":
-        case "Weapons":
-        case "Combat":
-            return "red";
-        case "Sparring":
-        case "Creative":
-            return "orange";
-        default:
-            return "white"; // Default color
-    }
-}
-
-// Function to get the current time
-function getTime() {
-    const now = new Date();
-    return now.toLocaleTimeString(); // Get time in HH:MM:SS format
-}
