@@ -1,0 +1,7 @@
+{
+    "rings": [
+        { "id": "ring1", "status": "open", "lastChecked": "" },
+        { "id": "ring2", "status": "forms", "lastChecked": "" },
+        { "id": "ring3", "status": "sparring", "lastChecked": "" }
+    ]
+}
