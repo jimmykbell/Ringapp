@@ -7,7 +7,9 @@ fetch('data.json')
         return response.json();
     })
     .then(data => {
+        console.log("Fetched data:", data); // Log the fetched data to the console
         const ringsContainer = document.getElementById('rings');
+        // Loop through each ring in the data and create a square for it
         data.rings.forEach(ring => {
             const ringDiv = document.createElement('div');
             ringDiv.className = `ring ${ring.status}`; // Set class based on status
@@ -17,6 +19,7 @@ fetch('data.json')
             ringDiv.onclick = () => updateStatus(ringDiv); // Attach click event
             ringsContainer.appendChild(ringDiv);
         });
+        console.log("Number of rings displayed:", data.rings.length); // Log the number of rings processed
     })
     .catch(error => console.error('Error fetching data:', error));
 
@@ -24,7 +27,7 @@ fetch('data.json')
 function updateStatus(ringDiv) {
     const currentStatus = ringDiv.getAttribute('data-status');
     let newStatus;
-    
+
     // Simple cycling of statuses for demonstration
     switch (currentStatus) {
         case 'open':
