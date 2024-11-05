@@ -1,53 +1,59 @@
+let selectedRing = null;
+
 // Fetch the JSON data
 fetch('data.json')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        console.log("Fetched data:", data); // Log the fetched data to the console
         const ringsContainer = document.getElementById('rings');
-        // Loop through each ring in the data and create a square for it
         data.rings.forEach(ring => {
             const ringDiv = document.createElement('div');
-            ringDiv.className = `ring ${ring.status}`; // Set class based on status
-            ringDiv.textContent = ring.id; // Display ring number
+            ringDiv.className = `ring ${ring.status}`;
+            ringDiv.textContent = ring.id;
             ringDiv.setAttribute('data-status', ring.status);
-            ringDiv.setAttribute('data-last-checked', ring.lastChecked);
-            ringDiv.onclick = () => updateStatus(ringDiv); // Attach click event
+            ringDiv.setAttribute('data-last-checked', ring.lastChecked || "Not checked");
+
+            // Set click event to open modal
+            ringDiv.onclick = () => openModal(ringDiv);
+
             ringsContainer.appendChild(ringDiv);
         });
-        console.log("Number of rings displayed:", data.rings.length); // Log the number of rings processed
     })
     .catch(error => console.error('Error fetching data:', error));
 
-// Function to update the status when a ring is clicked
-function updateStatus(ringDiv) {
-    const currentStatus = ringDiv.getAttribute('data-status');
-    let newStatus;
+// Function to open the status selection modal
+function openModal(ringDiv) {
+    selectedRing = ringDiv; // Store the clicked ring
+    document.getElementById('statusModal').style.display = 'block'; // Show modal
+}
 
-    // Simple cycling of statuses for demonstration
-    switch (currentStatus) {
-        case 'open':
-            newStatus = 'forms';
-            break;
-        case 'forms':
-            newStatus = 'sparring';
-            break;
-        case 'sparring':
-            newStatus = 'open';
-            break;
-        default:
-            newStatus = 'open';
-    }
+// Function to close the modal
+function closeModal() {
+    document.getElementById('statusModal').style.display = 'none';
+    selectedRing = null; // Clear the selected ring
+}
 
-    ringDiv.className = `ring ${newStatus}`; // Update class for new status
-    ringDiv.setAttribute('data-status', newStatus); // Update the status attribute
+// Event listener for closing the modal
+document.getElementById('closeModal').onclick = closeModal;
+
+// Event listeners for status option buttons
+document.querySelectorAll('.status-option').forEach(button => {
+    button.onclick = function() {
+        if (selectedRing) {
+            const newStatus = this.getAttribute('data-status');
+            updateStatus(selectedRing, newStatus); // Update ring with new status
+            closeModal();
+        }
+    };
+});
+
+// Function to update the ring's status
+function updateStatus(ringDiv, newStatus) {
+    // Update ring's class and data attribute
+    ringDiv.className = `ring ${newStatus}`;
+    ringDiv.setAttribute('data-status', newStatus);
 
     // Update the last checked time
     const now = new Date();
     ringDiv.setAttribute('data-last-checked', now.toLocaleString());
-    ringDiv.textContent = `${ringDiv.textContent} - ${now.toLocaleString()}`; // Optional: show last checked time
+    ringDiv.textContent = `${ringDiv.textContent.split(" - ")[0]} - ${now.toLocaleString()}`; // Update text
 }
