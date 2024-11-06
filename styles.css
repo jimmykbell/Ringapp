@@ -1,52 +1,57 @@
-/* styles.css */
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
 
-/* Container for the rings, arranged in a grid */
-.ring-container {
+/* Title */
+h1 {
+    margin-top: 20px;
+}
+
+/* Grid container for the rings */
+.grid-container {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columns */
-    gap: 10px;
-    padding: 20px;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 10px;
+    margin: 20px;
+    justify-content: center;
 }
 
-/* Style for each ring */
+/* Style for individual rings */
 .ring {
-    background-color: #ffffff; /* Default background color */
-    border: 2px solid black; /* Black border around each square */
-    border-radius: 8px; /* Rounded corners */
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
     display: flex;
-    flex-direction: column; /* Stack text vertically */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    width: 100px; /* Fixed width for each square */
-    height: 100px; /* Fixed height for each square */
-    font-size: 24px; /* Font size for the number */
-    font-weight: bold; /* Bold font for the number */
-    cursor: pointer; /* Cursor changes to pointer on hover */
-    transition: background-color 0.3s; /* Smooth background color transition */
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    position: relative;
+    cursor: pointer;
 }
 
-/* Ring number style */
-.ring-number {
-    font-size: 20px;
+/* Time text inside the rings */
+.timestamp {
+    font-size: 10px;
+    position: absolute;
+    bottom: 5px;
 }
 
-/* Timestamp for last checked */
-.time-stamp {
-    font-size: 12px;
-    color: #555;
-    margin-top: 5px;
-}
-
-/* Modal styles */
+/* Modal styling */
 .modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
@@ -54,32 +59,39 @@
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 300px;
+    width: 50%;
 }
 
 .close {
     color: #aaa;
+    float: right;
     font-size: 28px;
     font-weight: bold;
-    cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
     color: black;
-}
-
-/* Status button styles */
-.status-button {
-    margin: 5px;
-    padding: 10px;
-    background-color: #4CAF50; /* Green */
-    color: white;
-    border: none;
-    border-radius: 5px;
+    text-decoration: none;
     cursor: pointer;
 }
 
-.status-button:hover {
-    background-color: #45a049; /* Darker green */
+select {
+    padding: 5px;
+    font-size: 16px;
+    width: 100%;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #45a049;
 }
