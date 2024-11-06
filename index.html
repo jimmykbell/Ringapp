@@ -24,7 +24,8 @@
         document.getElementById('popup').style.display = 'none';
     }
 
-function updateStatus(selectedStatus) {
+function updateStatus() {
+    const selectedStatus = document.getElementById('status-select').value;
     const ring = document.getElementById(selectedRingId);
 
     // Get the current time and format it to 12-hour with AM/PM
@@ -32,7 +33,7 @@ function updateStatus(selectedStatus) {
     let hours = currentTime.getHours();
     const minutes = String(currentTime.getMinutes()).padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
+    hours = hours % 12 || 12; // Convert to 12-hour format and handle midnight as 12
 
     const formattedTime = `${hours}:${minutes} ${ampm}`;
 
@@ -40,45 +41,25 @@ function updateStatus(selectedStatus) {
     ring.textContent = `Ring ${selectedRingId.replace('ring', '')}\n${selectedStatus}\n${formattedTime}`;
     
     // Update color based on selected status
-    let ringColor;
     switch (selectedStatus) {
         case 'OPEN':
         case 'EXTREME':
             ring.style.backgroundColor = '#4caf50'; // Green for OPEN, EXTREME
-            ringColor = '#4caf50';
             break;
         case 'FORMS':
         case 'WEAPONS':
         case 'COMBAT':
             ring.style.backgroundColor = '#f44336'; // Red for FORMS, WEAPONS, COMBAT
-            ringColor = '#f44336';
             break;
         case 'SPARRING':
         case 'CREATIVE':
             ring.style.backgroundColor = '#ff9800'; // Orange for SPARRING, CREATIVE
-            ringColor = '#ff9800';
             break;
     }
 
-    // Save the status and timestamp in Firebase
-    const ringId = selectedRingId.replace('ring', ''); // Get the ring number
-    const ringData = {
-        status: selectedStatus,
-        timestamp: formattedTime,
-        color: ringColor
-    };
-
-    // Save to Firebase database
-    firebase.database().ref('rings/' + ringId).set(ringData)
-        .then(() => {
-            console.log("Ring status updated in Firebase");
-        })
-        .catch((error) => {
-            console.error("Error updating ring status: ", error);
-        });
-
     closePopup();
 }
+
 
     // Attach event listeners to all rings
     document.addEventListener("DOMContentLoaded", function() {
