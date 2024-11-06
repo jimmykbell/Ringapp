@@ -69,21 +69,19 @@ function renderRings() {
         gridContainer.innerHTML = "";
 
         // Loop through the rings and create their corresponding elements
-        for (let ringNumber in ringsData) {
-            const ring = ringsData[ringNumber];
+        for (let i = 1; i <= 28; i++) {
+            const ringData = ringsData && ringsData[i];
             const ringElement = document.createElement("div");
             ringElement.classList.add("ring");
-            ringElement.setAttribute("data-ring-number", ringNumber);
-            ringElement.style.backgroundColor = getRingColor(ring.status); // Set color based on status
-
-            // Add the ring number and timestamp (time last checked) inside the ring
+            ringElement.setAttribute("data-ring-number", i);
+            ringElement.style.backgroundColor = ringData ? getRingColor(ringData.status) : "gray"; // Set color based on status or gray if no status
             ringElement.innerHTML = `
-                <span class="ring-number">${ringNumber}</span>
-                <br><span class="timestamp">${ring.timestamp}</span>
+                <span class="ring-number">${i}</span>
+                <br><span class="timestamp">${ringData ? ringData.timestamp : "Not Checked"}</span>
             `;
             
             // Add event listener for ring click
-            ringElement.addEventListener("click", (event) => onRingClick(event, ringNumber));
+            ringElement.addEventListener("click", (event) => onRingClick(event, i));
 
             // Append the ring element to the grid
             gridContainer.appendChild(ringElement);
