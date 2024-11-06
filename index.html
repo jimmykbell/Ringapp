@@ -20,23 +20,22 @@
         <!-- 28 rings will be dynamically generated here -->
     </div>
 
-    <!-- Modal for status selection -->
-    <div id="ringModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Update Ring Status</h2>
-            <select id="statusSelect">
-                <option value="Open">Open</option>
-                <option value="Forms">Forms</option>
-                <option value="Weapons">Weapons</option>
-                <option value="Combat">Combat</option>
-                <option value="Sparring">Sparring</option>
-                <option value="Creative">Creative</option>
-                <option value="Extreme">Extreme</option>
-            </select>
-            <button id="updateButton">Update Status</button>
+    <!-- Modal for selecting the ring status -->
+<div id="statusModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="status-options">
+            <button class="status-btn">Open</button>
+            <button class="status-btn">Forms</button>
+            <button class="status-btn">Weapons</button>
+            <button class="status-btn">Combat</button>
+            <button class="status-btn">Sparring</button>
+            <button class="status-btn">Creative</button>
+            <button class="status-btn">Extreme</button>
         </div>
     </div>
+</div>
+
 
     <script src="app.js"></script>
 </body>
