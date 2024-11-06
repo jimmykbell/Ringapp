@@ -7,6 +7,26 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Add this to your HTML to create a hidden popup form -->
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <h3>Change Ring Status</h3>
+        <select id="status-select">
+            <option value="OPEN">Open</option>
+            <option value="FORMS">Forms</option>
+            <option value="WEAPONS">Weapons</option>
+            <option value="COMBAT">Combat</option>
+            <option value="SPARRING">Sparring</option>
+            <option value="CREATIVE">Creative</option>
+            <option value="EXTREME">Extreme</option>
+        </select>
+        <button onclick="updateStatus()">Update</button>
+        <button onclick="closePopup()">Cancel</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
     <div id="grid">
         <!-- 28 hardcoded ring squares -->
         <div class="ring" id="ring1">Ring 1</div>
