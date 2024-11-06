@@ -46,10 +46,39 @@ function renderGrid() {
         const square = document.createElement("div");
         square.classList.add("square");
         square.style.backgroundColor = getColor(ring.status);
-        square.innerHTML = `<span>${ring.timestamp}</span>`;
+        
+        const timestampFormatted = new Date(ring.timestamp).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        square.innerHTML = `
+            <span class="timestamp">${timestampFormatted}</span>
+            <span class="ring-number">${index + 1}</span>
+            <span class="status-text">${ring.status}</span>
+        `;
         square.addEventListener("click", () => openPopup(index));
         grid.appendChild(square);
     });
+}
+function updateStatus(status) {
+    const timestamp = new Date().toLocaleString();
+    ringData[currentSquareIndex] = { status, timestamp };
+    saveData(currentSquareIndex);
+    renderGrid();
+    closePopup();
+}
+function getColor(status) {
+    switch (status) {
+        case "Open":
+        case "Extreme":
+            return "green"; // Open and Extreme turn green
+        case "Forms":
+        case "Weapons":
+        case "Combat":
+            return "red"; // Forms, Weapons, Combat turn red
+        case "Sparring":
+        case "Creative":
+            return "orange"; // Sparring and Creative turn orange
+        default:
+            return "#ddd"; // Default color
+    }
 }
 
 // Open popup and set the current square index
