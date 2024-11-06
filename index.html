@@ -3,165 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ring Status</title>
+    <title>Martial Arts Ring Status</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js"></script>
+    
 </head>
 <body>
-    <div class="ring-container">
-        <!-- Generate all 28 rings -->
-        <div class="ring" id="ring1">
-            <span class="ring-number">1</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time1">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring2">
-            <span class="ring-number">2</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time2">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring3">
-            <span class="ring-number">3</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time3">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring4">
-            <span class="ring-number">4</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time4">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring5">
-            <span class="ring-number">5</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time5">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring6">
-            <span class="ring-number">6</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time6">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring7">
-            <span class="ring-number">7</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time7">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring8">
-            <span class="ring-number">8</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time8">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring9">
-            <span class="ring-number">9</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time9">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring10">
-            <span class="ring-number">10</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time10">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring11">
-            <span class="ring-number">11</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time11">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring12">
-            <span class="ring-number">12</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time12">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring13">
-            <span class="ring-number">13</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time13">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring14">
-            <span class="ring-number">14</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time14">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring15">
-            <span class="ring-number">15</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time15">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring16">
-            <span class="ring-number">16</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time16">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring17">
-            <span class="ring-number">17</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time17">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring18">
-            <span class="ring-number">18</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time18">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring19">
-            <span class="ring-number">19</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time19">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring20">
-            <span class="ring-number">20</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time20">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring21">
-            <span class="ring-number">21</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time21">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring22">
-            <span class="ring-number">22</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time22">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring23">
-            <span class="ring-number">23</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time23">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring24">
-            <span class="ring-number">24</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time24">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring25">
-            <span class="ring-number">25</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time25">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring26">
-            <span class="ring-number">26</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time26">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring27">
-            <span class="ring-number">27</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time27">Not yet</span></div>
-        </div>
-        <div class="ring" id="ring28">
-            <span class="ring-number">28</span>
-            <div class="time-stamp">Last checked: <span class="timestamp" id="time28">Not yet</span></div>
-        </div>
+
+    <h1>Ring Status</h1>
+
+    <div class="grid-container">
+        <!-- 28 rings will be dynamically generated here -->
     </div>
 
-    <!-- Modal Structure -->
-    <div id="modal" class="modal">
+    <!-- Modal for status selection -->
+    <div id="ringModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Select Status</h2>
-            <button class="status-button" data-status="Open">Open</button>
-            <button class="status-button" data-status="Forms">Forms</button>
-            <button class="status-button" data-status="Weapons">Weapons</button>
-            <button class="status-button" data-status="Combat">Combat</button>
-            <button class="status-button" data-status="Sparring">Sparring</button>
-            <button class="status-button" data-status="Creative">Creative</button>
-            <button class="status-button" data-status="Extreme">Extreme</button>
+            <h2>Update Ring Status</h2>
+            <select id="statusSelect">
+                <option value="Open">Open</option>
+                <option value="Forms">Forms</option>
+                <option value="Weapons">Weapons</option>
+                <option value="Combat">Combat</option>
+                <option value="Sparring">Sparring</option>
+                <option value="Creative">Creative</option>
+                <option value="Extreme">Extreme</option>
+            </select>
+            <button id="updateButton">Update Status</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
-    authDomain: "atarings00.firebaseapp.com",
-    databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
-    projectId: "atarings00",
-    storageBucket: "atarings00.firebasestorage.app",
-    messagingSenderId: "981428477768",
-    appId: "1:981428477768:web:ce13879472db8df2349d7d",
-    measurementId: "G-93M7Q2CJVB"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    <script src="app.js"></script>
 </body>
 </html>
