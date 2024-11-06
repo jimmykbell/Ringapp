@@ -1,4 +1,4 @@
-// Initialize Firebase (if not already done)
+// Firebase config
 const firebaseConfig = {
  apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
   authDomain: "atarings00.firebaseapp.com",
@@ -9,67 +9,59 @@ const firebaseConfig = {
   appId: "1:981428477768:web:ce13879472db8df2349d7d",
   measurementId: "G-93M7Q2CJVB"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let ringData = Array(28).fill({ status: "Open", timestamp: new Date().toLocaleString() });
-let currentSquareIndex = null;
+// Ring data
+let ringsData = Array(28).fill({
+    status: 'OPEN',
+    timestamp: Date.now(),
+    stacked: false
+});
 
-// Load ring data from Firebase Firestore when the page loads
-function loadData() {
-    db.collection("ringData").get()
-        .then(snapshot => {
-            snapshot.forEach((doc, index) => {
-                if (index < 28) {
-                    // Update ringData array with data from Firebase
-                    ringData[index] = doc.data();
-                }
-            });
-            renderGrid(); // Re-render the grid with the data from Firebase
-        })
-        .catch(error => {
-            console.error("Error loading data:", error);
-        });
-}
-
-// Save updated data to Firebase Firestore
-function saveData(index) {
-    db.collection("ringData").doc(`ring${index}`).set(ringData[index])
-        .catch(error => {
-            console.error("Error saving data:", error);
-        });
-}
-
-// Render the grid with the data (from Firebase or default values)
+// Render the grid
 function renderGrid() {
     const grid = document.getElementById("grid");
-    grid.innerHTML = ""; // Clear the grid before rendering
+    grid.innerHTML = "";
 
-    ringData.forEach((ring, index) => {
+    ringsData.forEach((ring, index) => {
         const square = document.createElement("div");
-        square.classList.add("square");
-        square.style.backgroundColor = getColor(ring.status);
-
-        // Format the timestamp to only show hour and minute
-        const timestampFormatted = new Date(ring.timestamp).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-
-        // Place the ring number, timestamp, and status inside the square
+        square.classList.add("square", getStatusColorClass(ring.status));
         square.innerHTML = `
-            <span class="timestamp">${timestampFormatted}</span>
+            <span class="timestamp">${new Date(ring.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             <span class="ring-number">${index + 1}</span>
             <span class="status-text">${ring.status}</span>
+            <input type="checkbox" class="stacked-toggle" ${ring.stacked ? 'checked' : ''} />
         `;
-        square.addEventListener("click", () => openPopup(index)); // Add click listener to open the popup
+        square.addEventListener("click", () => openPopup(index));
         grid.appendChild(square);
     });
 }
 
-// Open popup and set the current square index
+// Get color for ring status
+function getStatusColorClass(status) {
+    switch(status) {
+        case 'OPEN':
+        case 'EXTREME':
+            return 'green';
+        case 'FORMS':
+        case 'WEAPONS':
+        case 'COMBAT':
+            return 'red';
+        case 'SPARRING':
+        case 'CREATIVE':
+            return 'orange';
+        default:
+            return '';
+    }
+}
+
+// Open the popup for changing status
+let selectedRingIndex = null;
+
 function openPopup(index) {
-    currentSquareIndex = index;
+    selectedRingIndex = index;
     document.getElementById("popup").classList.add("open");
 }
 
@@ -78,32 +70,41 @@ function closePopup() {
     document.getElementById("popup").classList.remove("open");
 }
 
-// Update the ring status and timestamp, then save it to Firebase
+// Update the ring status and store in Firebase
 function updateStatus(status) {
-    const timestamp = new Date().toLocaleString();
-    ringData[currentSquareIndex] = { status, timestamp };
-    saveData(currentSquareIndex);  // Save to Firebase
-    renderGrid();  // Re-render the grid to show changes
-    closePopup();
-}
+    if (selectedRingIndex !== null) {
+        const ring = ringsData[selectedRingIndex];
+        ring.status = status;
+        ring.timestamp = Date.now();
+        ring.stacked = document.querySelectorAll(".stacked-toggle")[selectedRingIndex].checked;
 
-// Get the color based on status
-function getColor(status) {
-    switch (status) {
-        case "Open":
-        case "Extreme":
-            return "green"; // Open and Extreme turn green
-        case "Forms":
-        case "Weapons":
-        case "Combat":
-            return "red"; // Forms, Weapons, Combat turn red
-        case "Sparring":
-        case "Creative":
-            return "orange"; // Sparring and Creative turn orange
-        default:
-            return "#ddd"; // Default color
+        db.collection("rings").doc(selectedRingIndex.toString()).set({
+            status: ring.status,
+            timestamp: ring.timestamp,
+            stacked: ring.stacked
+        });
+
+        renderGrid();
+        closePopup();
     }
 }
 
-// Load data from Firebase on page load
-window.onload = loadData;
+// Fetch data from Firebase on load
+db.collection("rings").get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+        const ringIndex = doc.id;
+        const ringData = doc.data();
+        ringsData[ringIndex] = ringData;
+    });
+    renderGrid();
+});
+
+// Listen for real-time updates
+db.collection("rings").onSnapshot(querySnapshot => {
+    querySnapshot.forEach(doc => {
+        const ringIndex = doc.id;
+        const ringData = doc.data();
+        ringsData[ringIndex] = ringData;
+    });
+    renderGrid();
+});
