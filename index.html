@@ -27,11 +27,14 @@ function updateStatus() {
     const selectedStatus = document.getElementById('status-select').value;
     const ring = document.getElementById(selectedRingId);
 
-    // Get the current time
+    // Get the current time and format it to 12-hour with AM/PM
     const currentTime = new Date();
-    const hours = String(currentTime.getHours()).padStart(2, '0');
+    let hours = currentTime.getHours();
     const minutes = String(currentTime.getMinutes()).padStart(2, '0');
-    const formattedTime = `${hours}:${minutes}`; // Format as HH:MM
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert to 12-hour format and handle midnight as 12
+
+    const formattedTime = `${hours}:${minutes} ${ampm}`;
 
     // Update the ring text to show status and time
     ring.textContent = `Ring ${selectedRingId.replace('ring', '')}\n${selectedStatus}\n${formattedTime}`;
