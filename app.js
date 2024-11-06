@@ -1,12 +1,13 @@
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com", // Realtime Database URL
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
+  authDomain: "atarings00.firebaseapp.com",
+  databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
+  projectId: "atarings00",
+  storageBucket: "atarings00.firebasestorage.app",
+  messagingSenderId: "981428477768",
+  appId: "1:981428477768:web:ce13879472db8df2349d7d",
+  measurementId: "G-93M7Q2CJVB"
 };
 
 // Initialize Firebase
