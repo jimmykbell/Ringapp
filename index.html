@@ -38,7 +38,7 @@ function updateStatus() {
     const formattedTime = `${hours}:${minutes} ${ampm}`;
 
     // Update the ring text to show status and time
-    ring.textContent = `Ring ${selectedRingId.replace('ring', '')}\n${selectedStatus}\n${formattedTime}`;
+    ring.textContent = `Ring ${selectedRingId.replace('ring', '')}<br>\n${selectedStatus}<br>\n${formattedTime}`;
     
     // Update color based on selected status
     switch (selectedStatus) {
