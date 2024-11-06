@@ -1,4 +1,4 @@
-// Firebase configuration and initialization
+// Initialize Firebase (if not already done)
 const firebaseConfig = {
  apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
   authDomain: "atarings00.firebaseapp.com",
@@ -15,21 +15,24 @@ const db = firebase.firestore();
 let ringData = Array(28).fill({ status: "Open", timestamp: new Date().toLocaleString() });
 let currentSquareIndex = null;
 
-// Load ring data from Firebase Firestore
+// Load ring data from Firebase Firestore when the page loads
 function loadData() {
     db.collection("ringData").get()
         .then(snapshot => {
             snapshot.forEach((doc, index) => {
-                if (index < 28) ringData[index] = doc.data();
+                if (index < 28) {
+                    // Update ringData array with data from Firebase
+                    ringData[index] = doc.data();
+                }
             });
-            renderGrid();
+            renderGrid(); // Re-render the grid with the data from Firebase
         })
         .catch(error => {
             console.error("Error loading data:", error);
         });
 }
 
-// Save ring data to Firebase Firestore
+// Save updated data to Firebase Firestore
 function saveData(index) {
     db.collection("ringData").doc(`ring${index}`).set(ringData[index])
         .catch(error => {
@@ -37,7 +40,7 @@ function saveData(index) {
         });
 }
 
-// Render the grid
+// Render the grid with the data (from Firebase or default values)
 function renderGrid() {
     const grid = document.getElementById("grid");
     grid.innerHTML = "";
@@ -57,13 +60,28 @@ function renderGrid() {
         grid.appendChild(square);
     });
 }
+
+// Open popup and set the current square index
+function openPopup(index) {
+    currentSquareIndex = index;
+    document.getElementById("popup").classList.add("open");
+}
+
+// Close the popup
+function closePopup() {
+    document.getElementById("popup").classList.remove("open");
+}
+
+// Update the ring status and timestamp, then save it to Firebase
 function updateStatus(status) {
     const timestamp = new Date().toLocaleString();
     ringData[currentSquareIndex] = { status, timestamp };
-    saveData(currentSquareIndex);
-    renderGrid();
+    saveData(currentSquareIndex);  // Save to Firebase
+    renderGrid();  // Re-render the grid to show changes
     closePopup();
 }
+
+// Get the color based on status
 function getColor(status) {
     switch (status) {
         case "Open":
@@ -81,15 +99,5 @@ function getColor(status) {
     }
 }
 
-// Open popup and set the current square index
-function openPopup(index) {
-    currentSquareIndex = index;
-    document.getElementById("popup").classList.add("open");
-}
-
-// Close the popup
-function closePopup() {
-    document.getElementById("popup").classList.remove("open");
-}
-
-// Update the ring status and timestamp
+// Load data from Firebase on page load
+window.onload = loadData;
