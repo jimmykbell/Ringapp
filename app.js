@@ -37,6 +37,9 @@ function updateRingStatus(ringNumber, status) {
 
 // Function to handle when a user clicks on a ring
 function onRingClick(event, ringNumber) {
+    // Preventing click event from propagating to parent
+    event.stopPropagation();
+
     // Create the modal with the status options
     const modal = document.getElementById("statusModal");
     modal.style.display = "block";
