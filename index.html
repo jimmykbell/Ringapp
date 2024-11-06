@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Martial Arts Ring Status</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <div id="grid" class="grid-container">
-            <!-- 28 squares will be dynamically generated here -->
-        </div>
+        <div id="grid" class="grid-container"></div>
     </div>
 
     <!-- Popup Modal -->
@@ -25,7 +26,5 @@
         <button onclick="updateStatus('Extreme')">Extreme</button>
         <button onclick="closePopup()">Close</button>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
