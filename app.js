@@ -71,4 +71,47 @@ function openPopup(index) {
 }
 
 // Close the popup without making changes
-function closePopup() 
+function closePopup() {
+    document.getElementById("popup").classList.remove("open");
+}
+
+// Update the status of the selected ring
+function updateStatus(status) {
+    if (selectedRingIndex !== null) {
+        const ring = ringsData[selectedRingIndex];
+        ring.status = status;  // Update the status
+        ring.timestamp = Date.now();  // Update the timestamp
+        ring.stacked = document.querySelectorAll(".stacked-toggle")[selectedRingIndex].checked; // Update stacked toggle
+
+        // Save updated data to Firebase
+        db.collection("rings").doc(selectedRingIndex.toString()).set({
+            status: ring.status,
+            timestamp: ring.timestamp,
+            stacked: ring.stacked
+        });
+
+        // Re-render the grid with the updated data
+        renderGrid();
+        closePopup();  // Close the popup after updating
+    }
+}
+
+// Fetch ring data from Firebase when the page loads
+db.collection("rings").get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+        const ringIndex = parseInt(doc.id);
+        const ringData = doc.data();
+        ringsData[ringIndex] = ringData;
+    });
+    renderGrid();  // Render the grid after data is loaded
+});
+
+// Listen for real-time updates from Firebase
+db.collection("rings").onSnapshot(querySnapshot => {
+    querySnapshot.forEach(doc => {
+        const ringIndex = parseInt(doc.id);
+        const ringData = doc.data();
+        ringsData[ringIndex] = ringData;
+    });
+    renderGrid();  // Re-render grid when Firebase data changes
+});
