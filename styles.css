@@ -10,22 +10,28 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 
 .container {
     width: 90%;
     max-width: 600px;
+    height: 90vh; /* Sets a maximum height */
+    overflow-y: auto; /* Adds vertical scroll if needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Adjust columns as needed */
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); /* Responsive columns */
     gap: 10px;
 }
 
 .square {
     width: 100%;
-    padding-top: 100%;
+    padding-top: 100%; /* Keeps the squares aspect ratio */
     position: relative;
     background-color: #ddd;
     border: 1px solid #aaa;
