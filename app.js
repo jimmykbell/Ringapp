@@ -12,77 +12,102 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const database = firebase.database(); // Reference to Firebase Realtime Database
 
-// Create rings grid
-function createRings() {
-    const gridContainer = document.querySelector('.grid-container');
+// Function to update the status of a ring and record the time it was checked
+function updateRingStatus(ringNumber, status) {
+    const timestamp = new Date().toLocaleTimeString(); // Get the current time without date
     
-    for (let i = 1; i <= 28; i++) {
-        const ring = document.createElement('div');
-        ring.classList.add('grid-item');
-        ring.id = `ring-${i}`;
+    // Reference to the specific ring in Firebase
+    const ringRef = database.ref('rings/' + ringNumber);
+    
+    // Update the status and timestamp in Firebase
+    ringRef.set({
+        status: status,
+        timestamp: timestamp
+    }).then(() => {
+        console.log("Ring " + ringNumber + " updated with status: " + status + " at " + timestamp);
         
-        // Firebase - Fetch ring status from database
-        database.ref(`rings/${i}`).once('value', (snapshot) => {
-            const data = snapshot.val();
-            const status = data ? data.status : "Open";  // Default to Open if no data
-            const timestamp = data ? data.timestamp : new Date().toLocaleTimeString();
-            
-            ring.innerHTML = `<span class="ring-number">${i}</span><br><span class="timestamp">${timestamp}</span>`;
-            
-            // Set the ring color based on the status
-            if (status === "Open" || status === "Extreme") {
-                ring.style.backgroundColor = "green";
-            } else if (status === "Forms" || status === "Weapons" || status === "Combat") {
-                ring.style.backgroundColor = "red";
-            } else if (status === "Sparring" || status === "Creative") {
-                ring.style.backgroundColor = "orange";
-            }
+        // Re-render the rings after the update
+        renderRings();
+    }).catch((error) => {
+        console.error("Error updating ring:", error);
+    });
+}
 
-            ring.addEventListener('click', () => openModal(i, status));
+// Function to handle when a user clicks on a ring
+function onRingClick(event, ringNumber) {
+    // Create the modal with the status options
+    const modal = document.getElementById("statusModal");
+    modal.style.display = "block";
+    
+    // When the user selects a status, update the ring
+    const statusButtons = document.querySelectorAll(".status-btn");
+    statusButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const selectedStatus = button.innerText; // Get the selected status
+
+            // Update the status and time for the selected ring in Firebase
+            updateRingStatus(ringNumber, selectedStatus);
+
+            // Close the modal after updating
+            modal.style.display = "none";
         });
+    });
+}
 
-        gridContainer.appendChild(ring);
+// Function to render all the rings from Firebase
+function renderRings() {
+    const gridContainer = document.querySelector(".grid-container");
+
+    // Get all rings from Firebase
+    const ringsRef = database.ref("rings");
+    ringsRef.once("value", (snapshot) => {
+        const ringsData = snapshot.val();
+        
+        // Clear previous rings if any
+        gridContainer.innerHTML = "";
+
+        // Loop through the rings and create their corresponding elements
+        for (let ringNumber in ringsData) {
+            const ring = ringsData[ringNumber];
+            const ringElement = document.createElement("div");
+            ringElement.classList.add("ring");
+            ringElement.setAttribute("data-ring-number", ringNumber);
+            ringElement.style.backgroundColor = getRingColor(ring.status); // Set color based on status
+
+            // Add the ring number and timestamp (time last checked) inside the ring
+            ringElement.innerHTML = `
+                <span class="ring-number">${ringNumber}</span>
+                <br><span class="timestamp">${ring.timestamp}</span>
+            `;
+            
+            // Add event listener for ring click
+            ringElement.addEventListener("click", (event) => onRingClick(event, ringNumber));
+
+            // Append the ring element to the grid
+            gridContainer.appendChild(ringElement);
+        }
+    });
+}
+
+// Function to get the color for a ring based on its status
+function getRingColor(status) {
+    switch (status) {
+        case "Open":
+        case "Extreme":
+            return "green";
+        case "Forms":
+        case "Weapons":
+        case "Combat":
+            return "red";
+        case "Sparring":
+        case "Creative":
+            return "orange";
+        default:
+            return "white"; // Default color if no status is set
     }
 }
 
-// Open modal and update status
-function openModal(ringId, currentStatus) {
-    const modal = document.getElementById('ringModal');
-    const selectElement = document.getElementById('statusSelect');
-    const updateButton = document.getElementById('updateButton');
-
-    // Set the current status in the select menu
-    selectElement.value = currentStatus;
-
-    // Show the modal
-    modal.style.display = "block";
-
-    // Update the status in Firebase when the button is clicked
-    updateButton.onclick = () => {
-        const newStatus = selectElement.value;
-        const timestamp = new Date().toLocaleTimeString();
-
-        // Update Firebase with new status and timestamp
-        database.ref(`rings/${ringId}`).set({
-            status: newStatus,
-            timestamp: timestamp
-        });
-
-        // Close the modal after updating
-        modal.style.display = "none";
-        // Refresh the rings to show updated status
-        createRings();
-    };
-}
-
-// Close the modal
-const closeModal = document.querySelector('.close');
-closeModal.onclick = () => {
-    const modal = document.getElementById('ringModal');
-    modal.style.display = "none";
-};
-
-// Load the rings when the page loads
-window.onload = createRings;
+// Initial render call to display rings from Firebase
+renderRings();
