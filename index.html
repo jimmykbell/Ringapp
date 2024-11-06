@@ -23,30 +23,38 @@
         document.getElementById('popup').style.display = 'none';
     }
 
-    // Function to update ring status
-    function updateStatus() {
-        const selectedStatus = document.getElementById('status-select').value;
-        const ring = document.getElementById(selectedRingId);
+function updateStatus() {
+    const selectedStatus = document.getElementById('status-select').value;
+    const ring = document.getElementById(selectedRingId);
 
-        ring.textContent = `Ring ${selectedRingId.replace('ring', '')}\n${selectedStatus}`;
-        switch (selectedStatus) {
-            case 'OPEN':
-            case 'EXTREME':
-                ring.style.backgroundColor = '#4caf50'; // Green for OPEN, EXTREME
-                break;
-            case 'FORMS':
-            case 'WEAPONS':
-            case 'COMBAT':
-                ring.style.backgroundColor = '#f44336'; // Red for FORMS, WEAPONS, COMBAT
-                break;
-            case 'SPARRING':
-            case 'CREATIVE':
-                ring.style.backgroundColor = '#ff9800'; // Orange for SPARRING, CREATIVE
-                break;
-        }
+    // Get the current time
+    const currentTime = new Date();
+    const hours = String(currentTime.getHours()).padStart(2, '0');
+    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}`; // Format as HH:MM
 
-        closePopup();
+    // Update the ring text to show status and time
+    ring.textContent = `Ring ${selectedRingId.replace('ring', '')}\n${selectedStatus}\n${formattedTime}`;
+    
+    // Update color based on selected status
+    switch (selectedStatus) {
+        case 'OPEN':
+        case 'EXTREME':
+            ring.style.backgroundColor = '#4caf50'; // Green for OPEN, EXTREME
+            break;
+        case 'FORMS':
+        case 'WEAPONS':
+        case 'COMBAT':
+            ring.style.backgroundColor = '#f44336'; // Red for FORMS, WEAPONS, COMBAT
+            break;
+        case 'SPARRING':
+        case 'CREATIVE':
+            ring.style.backgroundColor = '#ff9800'; // Orange for SPARRING, CREATIVE
+            break;
     }
+
+    closePopup();
+}
 
     // Attach event listeners to all rings
     document.addEventListener("DOMContentLoaded", function() {
