@@ -1,88 +1,66 @@
-// Firebase configuration from Firebase Console
+// Firebase configuration and initialization
 const firebaseConfig = {
-    apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
-    authDomain: "atarings00.firebaseapp.com",
-    databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
-    projectId: "atarings00",
-    storageBucket: "atarings00.firebasestorage.app",
-    messagingSenderId: "Y981428477768",
-    appId: "1:981428477768:web:ce13879472db8df2349d7d",
-    measurementId: "G-93M7Q2CJVB"
+ apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
+  authDomain: "atarings00.firebaseapp.com",
+  databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
+  projectId: "atarings00",
+  storageBucket: "atarings00.firebasestorage.app",
+  messagingSenderId: "981428477768",
+  appId: "1:981428477768:web:ce13879472db8df2349d7d",
+  measurementId: "G-93M7Q2CJVB"
 };
-
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.firestore();
 
-// Get reference to the rings data
-const ringsRef = database.ref('rings');
+let ringData = Array(28).fill({ status: "Open", timestamp: new Date().toLocaleString() });
+let currentSquareIndex = null;
 
-// Create the rings grid dynamically based on data
-function createRingGrid() {
-  const ringsContainer = document.getElementById("rings-container");
-  for (let i = 1; i <= 28; i++) {
-    const ringElement = document.createElement("div");
-    ringElement.classList.add("ring");
-    ringElement.id = "ring-" + i; // Use ring ID
-    ringElement.innerHTML = `
-      <span class="ring-number">${i}</span>
-      <span class="ring-time" id="time-${i}">Not checked yet</span>
-    `;
-    ringElement.addEventListener("click", () => openModal(i)); // Add event listener
-    ringsContainer.appendChild(ringElement);
-  }
+// Load ring data from Firebase Firestore
+function loadData() {
+    db.collection("ringData").get()
+        .then(snapshot => {
+            snapshot.forEach((doc, index) => {
+                if (index < 28) ringData[index] = doc.data();
+            });
+            renderGrid();
+        })
+        .catch(error => {
+            console.error("Error loading data:", error);
+        });
 }
 
-// Open the modal to select the status of the clicked ring
-function openModal(ringId) {
-  const modal = document.getElementById("myModal");
-  const ringStatusSelect = document.getElementById("ring-status");
-  const ringTimeSpan = document.getElementById("time-" + ringId);
-
-  // Open the modal
-  modal.style.display = "block";
-
-  // Handle form submission for the ring
-  document.getElementById("submit-status").onclick = function() {
-    const newStatus = ringStatusSelect.value;
-    const timestamp = new Date().toLocaleTimeString(); // Format the time
-    updateRingStatus(ringId, newStatus, timestamp);
-    modal.style.display = "none"; // Close modal
-  };
+// Save ring data to Firebase Firestore
+function saveData(index) {
+    db.collection("ringData").doc(`ring${index}`).set(ringData[index])
+        .catch(error => {
+            console.error("Error saving data:", error);
+        });
 }
 
-// Update the ring status in Firebase
-function updateRingStatus(ringId, status, timestamp) {
-  const ringRef = ringsRef.child(ringId); // Get a reference to the specific ring in Firebase
+// Render the grid
+function renderGrid() {
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
 
-  ringRef.update({
-    status: status,
-    timestamp: timestamp
-  }).then(() => {
-    // Update the UI immediately after Firebase update
-    document.getElementById("ring-" + ringId).style.backgroundColor = getColorForStatus(status);
-    document.getElementById("time-" + ringId).innerText = timestamp;
-  }).catch((error) => {
-    console.error("Error updating ring: ", error);
-  });
+    ringData.forEach((ring, index) => {
+        const square = document.createElement("div");
+        square.classList.add("square");
+        square.style.backgroundColor = getColor(ring.status);
+        square.innerHTML = `<span>${ring.timestamp}</span>`;
+        square.addEventListener("click", () => openPopup(index));
+        grid.appendChild(square);
+    });
 }
 
-// Map statuses to background colors
-function getColorForStatus(status) {
-  switch (status) {
-    case "Open":
-    case "Extreme":
-      return "green";
-    case "Forms":
-    case "Weapons":
-    case "Combat":
-      return "red";
-    case "Sparring":
-    case "Creative":
-      return "orange";
-    default:
-      return "white";
-  }
+// Open popup and set the current square index
+function openPopup(index) {
+    currentSquareIndex = index;
+    document.getElementById("popup").classList.add("open");
 }
 
-// Create the initial grid of rings
-createRingGrid();
+// Close the popup
+function closePopup() {
+    document.getElementById("popup").classList.remove("open");
+}
+
+// Update the ring status and timestamp
