@@ -16,8 +16,8 @@ body {
 .container {
     width: 90%;
     max-width: 600px;
-    height: 90vh; /* Sets a maximum height */
-    overflow-y: auto; /* Adds vertical scroll if needed */
+    height: 90vh;
+    overflow-y: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,28 +25,36 @@ body {
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); /* Responsive columns */
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); /* This ensures the squares are responsive */
     gap: 10px;
+    width: 100%;
 }
 
 .square {
-    width: 100%;
-    padding-top: 100%; /* Keeps the squares aspect ratio */
     position: relative;
+    width: 100%;
+    padding-top: 100%; /* Keeps the squares square */
     background-color: #ddd;
     border: 1px solid #aaa;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    font-size: 16px; /* Ring number font size */
+    color: #333;
 }
 
-.square span {
+.square .timestamp {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 5px;
+    left: 5px;
     font-size: 10px;
-    padding: 5px;
+    color: #666;
+}
+
+.square .ring-number {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .popup {
