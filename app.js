@@ -10,105 +10,79 @@ const firebaseConfig = {
     measurementId: "G-93M7Q2CJVB"
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database(); // Reference to Firebase Realtime Database
+const database = firebase.database();
 
-// Function to update the status of a ring and record the time it was checked
-function updateRingStatus(ringNumber, status) {
-    const timestamp = new Date().toLocaleTimeString(); // Get the current time without date
-    
-    // Reference to the specific ring in Firebase
-    const ringRef = database.ref('rings/' + ringNumber);
-    
-    // Update the status and timestamp in Firebase
-    ringRef.set({
-        status: status,
-        timestamp: timestamp
-    }).then(() => {
-        console.log("Ring " + ringNumber + " updated with status: " + status + " at " + timestamp);
-        
-        // Re-render the rings after the update
-        renderRings();
-    }).catch((error) => {
-        console.error("Error updating ring:", error);
-    });
+// Get reference to the rings data
+const ringsRef = database.ref('rings');
+
+// Create the rings grid dynamically based on data
+function createRingGrid() {
+  const ringsContainer = document.getElementById("rings-container");
+  for (let i = 1; i <= 28; i++) {
+    const ringElement = document.createElement("div");
+    ringElement.classList.add("ring");
+    ringElement.id = "ring-" + i; // Use ring ID
+    ringElement.innerHTML = `
+      <span class="ring-number">${i}</span>
+      <span class="ring-time" id="time-${i}">Not checked yet</span>
+    `;
+    ringElement.addEventListener("click", () => openModal(i)); // Add event listener
+    ringsContainer.appendChild(ringElement);
+  }
 }
 
-// Function to handle when a user clicks on a ring
-function onRingClick(event, ringNumber) {
-    // Preventing click event from propagating to parent
-    event.stopPropagation();
+// Open the modal to select the status of the clicked ring
+function openModal(ringId) {
+  const modal = document.getElementById("myModal");
+  const ringStatusSelect = document.getElementById("ring-status");
+  const ringTimeSpan = document.getElementById("time-" + ringId);
 
-    // Create the modal with the status options
-    const modal = document.getElementById("statusModal");
-    modal.style.display = "block";
-    
-    // When the user selects a status, update the ring
-    const statusButtons = document.querySelectorAll(".status-btn");
-    statusButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            const selectedStatus = button.innerText; // Get the selected status
+  // Open the modal
+  modal.style.display = "block";
 
-            // Update the status and time for the selected ring in Firebase
-            updateRingStatus(ringNumber, selectedStatus);
-
-            // Close the modal after updating
-            modal.style.display = "none";
-        });
-    });
+  // Handle form submission for the ring
+  document.getElementById("submit-status").onclick = function() {
+    const newStatus = ringStatusSelect.value;
+    const timestamp = new Date().toLocaleTimeString(); // Format the time
+    updateRingStatus(ringId, newStatus, timestamp);
+    modal.style.display = "none"; // Close modal
+  };
 }
 
-// Function to render all the rings from Firebase
-function renderRings() {
-    const gridContainer = document.querySelector(".grid-container");
+// Update the ring status in Firebase
+function updateRingStatus(ringId, status, timestamp) {
+  const ringRef = ringsRef.child(ringId); // Get a reference to the specific ring in Firebase
 
-    // Get all rings from Firebase
-    const ringsRef = database.ref("rings");
-    ringsRef.once("value", (snapshot) => {
-        const ringsData = snapshot.val();
-        
-        // Clear previous rings if any
-        gridContainer.innerHTML = "";
-
-        // Loop through the rings and create their corresponding elements
-        for (let i = 1; i <= 28; i++) {
-            const ringData = ringsData && ringsData[i];
-            const ringElement = document.createElement("div");
-            ringElement.classList.add("ring");
-            ringElement.setAttribute("data-ring-number", i);
-            ringElement.style.backgroundColor = ringData ? getRingColor(ringData.status) : "gray"; // Set color based on status or gray if no status
-            ringElement.innerHTML = `
-                <span class="ring-number">${i}</span>
-                <br><span class="timestamp">${ringData ? ringData.timestamp : "Not Checked"}</span>
-            `;
-            
-            // Add event listener for ring click
-            ringElement.addEventListener("click", (event) => onRingClick(event, i));
-
-            // Append the ring element to the grid
-            gridContainer.appendChild(ringElement);
-        }
-    });
+  ringRef.update({
+    status: status,
+    timestamp: timestamp
+  }).then(() => {
+    // Update the UI immediately after Firebase update
+    document.getElementById("ring-" + ringId).style.backgroundColor = getColorForStatus(status);
+    document.getElementById("time-" + ringId).innerText = timestamp;
+  }).catch((error) => {
+    console.error("Error updating ring: ", error);
+  });
 }
 
-// Function to get the color for a ring based on its status
-function getRingColor(status) {
-    switch (status) {
-        case "Open":
-        case "Extreme":
-            return "green";
-        case "Forms":
-        case "Weapons":
-        case "Combat":
-            return "red";
-        case "Sparring":
-        case "Creative":
-            return "orange";
-        default:
-            return "white"; // Default color if no status is set
-    }
+// Map statuses to background colors
+function getColorForStatus(status) {
+  switch (status) {
+    case "Open":
+    case "Extreme":
+      return "green";
+    case "Forms":
+    case "Weapons":
+    case "Combat":
+      return "red";
+    case "Sparring":
+    case "Creative":
+      return "orange";
+    default:
+      return "white";
+  }
 }
 
-// Initial render call to display rings from Firebase
-renderRings();
+// Create the initial grid of rings
+createRingGrid();
