@@ -1,18 +1,17 @@
 // Firebase configuration
 const firebaseConfig = {
- apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
-  authDomain: "atarings00.firebaseapp.com",
-  databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
-  projectId: "atarings00",
-  storageBucket: "atarings00.firebasestorage.app",
-  messagingSenderId: "981428477768",
-  appId: "1:981428477768:web:ce13879472db8df2349d7d",
-  measurementId: "G-93M7Q2CJVB"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com", // Realtime Database URL
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID",
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const database = firebase.database();
 
 // Ring data array (28 rings)
 let ringsData = Array(28).fill({
@@ -83,8 +82,8 @@ function updateStatus(status) {
         ring.timestamp = Date.now();  // Update the timestamp
         ring.stacked = document.querySelectorAll(".stacked-toggle")[selectedRingIndex].checked; // Update stacked toggle
 
-        // Save updated data to Firebase
-        db.collection("rings").doc(selectedRingIndex.toString()).set({
+        // Save updated data to Firebase Realtime Database
+        database.ref('rings/' + selectedRingIndex).set({
             status: ring.status,
             timestamp: ring.timestamp,
             stacked: ring.stacked
@@ -96,22 +95,24 @@ function updateStatus(status) {
     }
 }
 
-// Fetch ring data from Firebase when the page loads
-db.collection("rings").get().then(querySnapshot => {
-    querySnapshot.forEach(doc => {
-        const ringIndex = parseInt(doc.id);
-        const ringData = doc.data();
-        ringsData[ringIndex] = ringData;
-    });
+// Fetch ring data from Firebase Realtime Database when the page loads
+database.ref('rings').once('value').then(snapshot => {
+    const rings = snapshot.val();
+    if (rings) {
+        for (let i = 0; i < 28; i++) {
+            ringsData[i] = rings[i] || ringsData[i];
+        }
+    }
     renderGrid();  // Render the grid after data is loaded
 });
 
-// Listen for real-time updates from Firebase
-db.collection("rings").onSnapshot(querySnapshot => {
-    querySnapshot.forEach(doc => {
-        const ringIndex = parseInt(doc.id);
-        const ringData = doc.data();
-        ringsData[ringIndex] = ringData;
-    });
+// Listen for real-time updates from Firebase Realtime Database
+database.ref('rings').on('value', snapshot => {
+    const rings = snapshot.val();
+    if (rings) {
+        for (let i = 0; i < 28; i++) {
+            ringsData[i] = rings[i] || ringsData[i];
+        }
+    }
     renderGrid();  // Re-render grid when Firebase data changes
 });
