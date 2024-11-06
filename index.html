@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+    <script>
+    var firebaseConfig = {
+  apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
+  authDomain: "atarings00.firebaseapp.com",
+  databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
+  projectId: "atarings00",
+  storageBucket: "atarings00.firebasestorage.app",
+  messagingSenderId: "981428477768",
+  appId: "1:981428477768:web:ce13879472db8df2349d7d",
+  measurementId: "G-93M7Q2CJVB"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+</script>
+
 
     <script>
     let selectedRingId = null;
@@ -23,8 +41,7 @@
         document.getElementById('popup').style.display = 'none';
     }
 
-function updateStatus() {
-    const selectedStatus = document.getElementById('status-select').value;
+function updateStatus(selectedStatus) {
     const ring = document.getElementById(selectedRingId);
 
     // Get the current time and format it to 12-hour with AM/PM
@@ -32,7 +49,7 @@ function updateStatus() {
     let hours = currentTime.getHours();
     const minutes = String(currentTime.getMinutes()).padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12; // Convert to 12-hour format and handle midnight as 12
+    hours = hours % 12 || 12;
 
     const formattedTime = `${hours}:${minutes} ${ampm}`;
 
@@ -40,21 +57,42 @@ function updateStatus() {
     ring.textContent = `Ring ${selectedRingId.replace('ring', '')}\n${selectedStatus}\n${formattedTime}`;
     
     // Update color based on selected status
+    let ringColor;
     switch (selectedStatus) {
         case 'OPEN':
         case 'EXTREME':
             ring.style.backgroundColor = '#4caf50'; // Green for OPEN, EXTREME
+            ringColor = '#4caf50';
             break;
         case 'FORMS':
         case 'WEAPONS':
         case 'COMBAT':
             ring.style.backgroundColor = '#f44336'; // Red for FORMS, WEAPONS, COMBAT
+            ringColor = '#f44336';
             break;
         case 'SPARRING':
         case 'CREATIVE':
             ring.style.backgroundColor = '#ff9800'; // Orange for SPARRING, CREATIVE
+            ringColor = '#ff9800';
             break;
     }
+
+    // Save the status and timestamp in Firebase
+    const ringId = selectedRingId.replace('ring', ''); // Get the ring number
+    const ringData = {
+        status: selectedStatus,
+        timestamp: formattedTime,
+        color: ringColor
+    };
+
+    // Save to Firebase database
+    firebase.database().ref('rings/' + ringId).set(ringData)
+        .then(() => {
+            console.log("Ring status updated in Firebase");
+        })
+        .catch((error) => {
+            console.error("Error updating ring status: ", error);
+        });
 
     closePopup();
 }
@@ -121,5 +159,19 @@ function updateStatus() {
         <div class="ring" id="ring27">Ring 27</div>
         <div class="ring" id="ring28">Ring 28</div>
     </div>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Retrieve all ring data from Firebase
+    firebase.database().ref('rings').once('value', (snapshot) => {
+        const ringsData = snapshot.val();
+        if (ringsData) {
+            for (const ringId in ringsData) {
+                const ringData = ringsData[ringId];
+                const ring = document.getElementById('ring' + ringId);
+                ring.textContent = `Ring ${ringId}\n${ringData.status}\n${ringData.timestamp}`;
+                ring.style.backgroundColor = ringData.color;
+            }
+        }
+    });
+});
 </body>
 </html>
