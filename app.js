@@ -11,8 +11,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const database = firebase.database(app);
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
 // Create rings grid
 function createRings() {
