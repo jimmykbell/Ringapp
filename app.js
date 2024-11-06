@@ -43,20 +43,26 @@ function saveData(index) {
 // Render the grid with the data (from Firebase or default values)
 function renderGrid() {
     const grid = document.getElementById("grid");
-    grid.innerHTML = "";
+    grid.innerHTML = ""; // Clear the grid before rendering
 
     ringData.forEach((ring, index) => {
         const square = document.createElement("div");
         square.classList.add("square");
         square.style.backgroundColor = getColor(ring.status);
-        
-        const timestampFormatted = new Date(ring.timestamp).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+
+        // Format the timestamp to only show hour and minute
+        const timestampFormatted = new Date(ring.timestamp).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Place the ring number, timestamp, and status inside the square
         square.innerHTML = `
             <span class="timestamp">${timestampFormatted}</span>
             <span class="ring-number">${index + 1}</span>
             <span class="status-text">${ring.status}</span>
         `;
-        square.addEventListener("click", () => openPopup(index));
+        square.addEventListener("click", () => openPopup(index)); // Add click listener to open the popup
         grid.appendChild(square);
     });
 }
