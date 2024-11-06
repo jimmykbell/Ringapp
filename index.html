@@ -7,24 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
-    <script>
-    var firebaseConfig = {
-  apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
-  authDomain: "atarings00.firebaseapp.com",
-  databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
-  projectId: "atarings00",
-  storageBucket: "atarings00.firebasestorage.app",
-  messagingSenderId: "981428477768",
-  appId: "1:981428477768:web:ce13879472db8df2349d7d",
-  measurementId: "G-93M7Q2CJVB"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    var database = firebase.database();
-</script>
-
+   
 
     <script>
     let selectedRingId = null;
@@ -159,19 +142,6 @@ function updateStatus(selectedStatus) {
         <div class="ring" id="ring27">Ring 27</div>
         <div class="ring" id="ring28">Ring 28</div>
     </div>
-    document.addEventListener("DOMContentLoaded", function() {
-    // Retrieve all ring data from Firebase
-    firebase.database().ref('rings').once('value', (snapshot) => {
-        const ringsData = snapshot.val();
-        if (ringsData) {
-            for (const ringId in ringsData) {
-                const ringData = ringsData[ringId];
-                const ring = document.getElementById('ring' + ringId);
-                ring.textContent = `Ring ${ringId}\n${ringData.status}\n${ringData.timestamp}`;
-                ring.style.backgroundColor = ringData.color;
-            }
-        }
-    });
-});
+
 </body>
 </html>
