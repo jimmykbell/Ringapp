@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Martial Arts Ring Status</title>
+    <title>Martial Arts Tournament</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
-    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
         <div id="grid" class="grid-container"></div>
     </div>
 
-    <!-- Popup Modal -->
     <div id="popup" class="popup">
-        <h3>Update Status</h3>
-        <button onclick="updateStatus('Open')">Open</button>
-        <button onclick="updateStatus('Forms')">Forms</button>
-        <button onclick="updateStatus('Weapons')">Weapons</button>
-        <button onclick="updateStatus('Combat')">Combat</button>
-        <button onclick="updateStatus('Sparring')">Sparring</button>
-        <button onclick="updateStatus('Creative')">Creative</button>
-        <button onclick="updateStatus('Extreme')">Extreme</button>
-        <button onclick="closePopup()">Close</button>
+        <div class="popup-content">
+            <h2>Choose Status</h2>
+            <button onclick="updateStatus('Open')">OPEN</button>
+            <button onclick="updateStatus('Forms')">FORMS</button>
+            <button onclick="updateStatus('Weapons')">WEAPONS</button>
+            <button onclick="updateStatus('Combat')">COMBAT</button>
+            <button onclick="updateStatus('Sparring')">SPARRING</button>
+            <button onclick="updateStatus('Creative')">CREATIVE</button>
+            <button onclick="updateStatus('Extreme')">EXTREME</button>
+            <button onclick="closePopup()">Close</button>
+        </div>
     </div>
-    <script src="./script.js" defer></script>
 
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
