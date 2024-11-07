@@ -7,185 +7,161 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-   <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
 
     <script>
-
         // Your Firebase configuration
-var firebaseConfig = {
-  apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
-  authDomain: "atarings00.firebaseapp.com",
-  databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
-  projectId: "atarings00",
-  storageBucket: "atarings00.firebasestorage.app",
-  messagingSenderId: "981428477768",
-  appId: "1:981428477768:web:ce13879472db8df2349d7d",
-  measurementId: "G-93M7Q2CJVB"
-};
+        var firebaseConfig = {
+            apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
+            authDomain: "atarings00.firebaseapp.com",
+            databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
+            projectId: "atarings00",
+            storageBucket: "atarings00.firebasestorage.app",
+            messagingSenderId: "981428477768",
+            appId: "1:981428477768:web:ce13879472db8df2349d7d",
+            measurementId: "G-93M7Q2CJVB"
+        };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
 
-// Get a reference to the Firebase Realtime Database
-var database = firebase.database();
+        // Get a reference to the Firebase Realtime Database
+        var database = firebase.database();
 
-// Store the currently selected ring ID
-let selectedRingId = null;
+        // Store the currently selected ring ID
+        let selectedRingId = null;
 
-// Show the popup and set the selected ring ID
-function showPopup(ringId) {
-    selectedRingId = ringId;
-    document.getElementById('popup').style.display = 'flex';
-}
-
-// Close the popup
-function closePopup() {
-    document.getElementById('popup').style.display = 'none';
-}
-
-// Update the status of the ring and save to Firebase
-function updateStatus(selectedStatus) {
-    const ring = document.getElementById(selectedRingId);
-    
-    // Get the current time and format it to 12-hour with AM/PM
-    const currentTime = new Date();
-    let hours = currentTime.getHours();
-    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-
-    const formattedTime = `${hours}:${minutes} ${ampm}`;
-
-    // Update the ring's inner HTML with status and time
-    ring.innerHTML = `Ring ${selectedRingId.replace('ring', '')}<br>${selectedStatus}<br>${formattedTime}`;
-
-    // Save the ring's status and timestamp to Firebase
-    const ringId = selectedRingId.replace('ring', '');  // Get the ring number (1, 2, etc.)
-    const ringData = {
-        status: selectedStatus,
-        time: formattedTime
-    };
-    
-    // Update Firebase database with the ring's new status and time
-    database.ref('rings/' + ringId).set(ringData);
-
-    // Update the ring color based on the selected status
-    let ringColor;
-    switch (selectedStatus) {
-        case 'OPEN':
-        case 'EXTREME':
-            ring.style.backgroundColor = '#4caf50'; // Green
-            break;
-        case 'FORMS':
-        case 'WEAPONS':
-        case 'COMBAT':
-            ring.style.backgroundColor = '#f44336'; // Red
-            break;
-        case 'SPARRING':
-        case 'CREATIVE':
-            ring.style.backgroundColor = '#ff9800'; // Orange
-            break;
-    }
-
-    closePopup();
-}
-
-// Fetch data from Firebase when the page loads
-window.onload = function() {
-    database.ref('rings').once('value').then(function(snapshot) {
-        const rings = snapshot.val();
-        for (let ringId in rings) {
-            const ringData = rings[ringId];
-            const ringElement = document.getElementById('ring' + ringId);
-            if (ringData) {
-                ringElement.innerHTML = `Ring ${ringId}<br>${ringData.status}<br>${ringData.time}`;
-                switch (ringData.status) {
-                    case 'OPEN':
-                    case 'EXTREME':
-                        ringElement.style.backgroundColor = '#4caf50'; // Green
-                        break;
-                    case 'FORMS':
-                    case 'WEAPONS':
-                    case 'COMBAT':
-                        ringElement.style.backgroundColor = '#f44336'; // Red
-                        break;
-                    case 'SPARRING':
-                    case 'CREATIVE':
-                        ringElement.style.backgroundColor = '#ff9800'; // Orange
-                        break;
-                }
-            }
+        // Show the popup and set the selected ring ID
+        function showPopup(ringId) {
+            selectedRingId = ringId;
+            document.getElementById('popup').style.display = 'flex';
         }
-    });
-};
-    closePopup();
-}
 
+        // Close the popup
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
 
-    // Attach event listeners to all rings
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll('.ring').forEach(ring => {
-            ring.addEventListener('click', function() {
-                selectedRingId = this.id;
-                console.log("Ring clicked:", selectedRingId); // Debugging
-                openPopup();
+        // Update the status of the ring and save to Firebase
+        function updateStatus(selectedStatus) {
+            const ring = document.getElementById(selectedRingId);
+
+            // Get the current time and format it to 12-hour with AM/PM
+            const currentTime = new Date();
+            let hours = currentTime.getHours();
+            const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+
+            const formattedTime = `${hours}:${minutes} ${ampm}`;
+
+            // Update the ring's inner HTML with status and time
+            ring.innerHTML = `Ring ${selectedRingId.replace('ring', '')}<br>${selectedStatus}<br>${formattedTime}`;
+
+            // Save the ring's status and timestamp to Firebase
+            const ringId = selectedRingId.replace('ring', '');  // Get the ring number (1, 2, etc.)
+            const ringData = {
+                status: selectedStatus,
+                time: formattedTime
+            };
+
+            // Update Firebase database with the ring's new status and time
+            database.ref('rings/' + ringId).set(ringData);
+
+            // Update the ring color based on the selected status
+            let ringColor;
+            switch (selectedStatus) {
+                case 'OPEN':
+                case 'EXTREME':
+                    ring.style.backgroundColor = '#4caf50'; // Green
+                    break;
+                case 'FORMS':
+                case 'WEAPONS':
+                case 'COMBAT':
+                    ring.style.backgroundColor = '#f44336'; // Red
+                    break;
+                case 'SPARRING':
+                case 'CREATIVE':
+                    ring.style.backgroundColor = '#ff9800'; // Orange
+                    break;
+            }
+
+            closePopup();
+        }
+
+        // Fetch data from Firebase when the page loads
+        window.onload = function() {
+            database.ref('rings').once('value').then(function(snapshot) {
+                const rings = snapshot.val();
+                for (let ringId in rings) {
+                    const ringData = rings[ringId];
+                    const ringElement = document.getElementById('ring' + ringId);
+                    if (ringData) {
+                        ringElement.innerHTML = `Ring ${ringId}<br>${ringData.status}<br>${ringData.time}`;
+                        switch (ringData.status) {
+                            case 'OPEN':
+                            case 'EXTREME':
+                                ringElement.style.backgroundColor = '#4caf50'; // Green
+                                break;
+                            case 'FORMS':
+                            case 'WEAPONS':
+                            case 'COMBAT':
+                                ringElement.style.backgroundColor = '#f44336'; // Red
+                                break;
+                            case 'SPARRING':
+                            case 'CREATIVE':
+                                ringElement.style.backgroundColor = '#ff9800'; // Orange
+                                break;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Attach event listeners to all rings
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.ring').forEach(ring => {
+                ring.addEventListener('click', function() {
+                    selectedRingId = this.id;
+                    console.log("Ring clicked:", selectedRingId); // Debugging
+                    showPopup(selectedRingId); // Show the popup for the selected ring
+                });
             });
         });
-    });
-</script>
-    <!-- Add this to your HTML to create a hidden popup form -->
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <h3>Change Ring Status</h3>
-        <select id="status-select">
-            <option value="OPEN">Open</option>
-            <option value="FORMS">Forms</option>
-            <option value="WEAPONS">Weapons</option>
-            <option value="COMBAT">Combat</option>
-            <option value="SPARRING">Sparring</option>
-            <option value="CREATIVE">Creative</option>
-            <option value="EXTREME">Extreme</option>
-        </select>
-        <button onclick="updateStatus()">Update</button>
-        <button onclick="closePopup()">Cancel</button>
-    </div>
-</div>
+    </script>
 
-<script src="script.js"></script>
+    <!-- Add this to your HTML to create a hidden popup form -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h3>Change Ring Status</h3>
+            <select id="status-select">
+                <option value="OPEN">Open</option>
+                <option value="FORMS">Forms</option>
+                <option value="WEAPONS">Weapons</option>
+                <option value="COMBAT">Combat</option>
+                <option value="SPARRING">Sparring</option>
+                <option value="CREATIVE">Creative</option>
+                <option value="EXTREME">Extreme</option>
+            </select>
+            <button onclick="updateStatus(document.getElementById('status-select').value)">Update</button>
+            <button onclick="closePopup()">Cancel</button>
+        </div>
+    </div>
 
     <div id="grid">
         <!-- 28 hardcoded ring squares -->
-        <div class="ring" id="ring1" onclick="showPopup('ring1')">Ring 1</div>
-        <div class="ring" id="ring2" onclick="showPopup('ring2')">Ring 2</div>
-        <div class="ring" id="ring3" onclick="showPopup('ring3')">Ring 3</div>
-        <div class="ring" id="ring4" onclick="showPopup('ring4')">Ring 4</div>
-        <div class="ring" id="ring5" onclick="showPopup('ring5')">Ring 5</div>
-        <div class="ring" id="ring6" onclick="showPopup('ring6')">Ring 6</div>
-        <div class="ring" id="ring7" onclick="showPopup('ring7')">Ring 7</div>
-        <div class="ring" id="ring8" onclick="showPopup('ring8')">Ring 8</div>
-        <div class="ring" id="ring9" onclick="showPopup('ring9')">Ring 9</div>
-        <div class="ring" id="ring10" onclick="showPopup('ring10')">Ring 10</div>
-        <div class="ring" id="ring11" onclick="showPopup('ring11')">Ring 11</div>
-        <div class="ring" id="ring12" onclick="showPopup('ring12')">Ring 12</div>
-        <div class="ring" id="ring13" onclick="showPopup('ring13')">Ring 13</div>
-        <div class="ring" id="ring14" onclick="showPopup('ring14')">Ring 14</div>
-        <div class="ring" id="ring15" onclick="showPopup('ring15')">Ring 15</div>
-        <div class="ring" id="ring16" onclick="showPopup('ring16')">Ring 16</div>
-        <div class="ring" id="ring17" onclick="showPopup('ring17')">Ring 17</div>
-        <div class="ring" id="ring18" onclick="showPopup('ring18')">Ring 18</div>
-        <div class="ring" id="ring19" onclick="showPopup('ring19')">Ring 19</div>
-        <div class="ring" id="ring20" onclick="showPopup('ring20')">Ring 20</div>
-        <div class="ring" id="ring21" onclick="showPopup('ring21')">Ring 21</div>
-        <div class="ring" id="ring22" onclick="showPopup('ring22')">Ring 22</div>
-        <div class="ring" id="ring23" onclick="showPopup('ring23')">Ring 23</div>
-        <div class="ring" id="ring24" onclick="showPopup('ring24')">Ring 24</div>
-        <div class="ring" id="ring25" onclick="showPopup('ring25')">Ring 25</div>
-        <div class="ring" id="ring26" onclick="showPopup('ring26')">Ring 26</div>
-        <div class="ring" id="ring27" onclick="showPopup('ring27')">Ring 27</div>
-        <div class="ring" id="ring28" onclick="showPopup('ring28')">Ring 28</div>
-    </div>
-
-</body>
-</html>
+        <div class="ring" id="ring1">Ring 1</div>
+        <div class="ring" id="ring2">Ring 2</div>
+        <div class="ring" id="ring3">Ring 3</div>
+        <div class="ring" id="ring4">Ring 4</div>
+        <div class="ring" id="ring5">Ring 5</div>
+        <div class="ring" id="ring6">Ring 6</div>
+        <div class="ring" id="ring7">Ring 7</div>
+        <div class="ring" id="ring8">Ring 8</div>
+        <div class="ring" id="ring9">Ring 9</div>
+        <div class="ring" id="ring10">Ring 10</div>
+        <div class="ring" id="ring11">Ring 11</div>
+        <div class="ring" id="ring12">Ring 12</div>
+        <div class="ring" id="rin
