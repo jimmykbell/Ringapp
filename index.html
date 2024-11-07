@@ -46,7 +46,16 @@
 
         // Update the status of the ring and save to Firebase
         function updateStatus(selectedStatus) {
+            if (!selectedRingId) {
+                console.error("No ring selected.");
+                return;
+            }
+
             const ring = document.getElementById(selectedRingId);
+            if (!ring) {
+                console.error("Ring element not found:", selectedRingId);
+                return;
+            }
 
             // Get the current time and format it to 12-hour with AM/PM
             const currentTime = new Date();
@@ -71,7 +80,6 @@
             database.ref('rings/' + ringId).set(ringData);
 
             // Update the ring color based on the selected status
-            let ringColor;
             switch (selectedStatus) {
                 case 'OPEN':
                 case 'EXTREME':
@@ -91,48 +99,56 @@
             closePopup();
         }
 
-// Fetch data from Firebase when the page loads
-window.onload = function() {
-    database.ref('rings').once('value').then(function(snapshot) {
-        const rings = snapshot.val() || {}; // If no data, default to empty object
+        // Fetch data from Firebase when the page loads
+        window.onload = function() {
+            database.ref('rings').once('value').then(function(snapshot) {
+                const rings = snapshot.val() || {}; // Default to empty object if no data exists
 
-        // Iterate through all 28 rings (from 1 to 28)
-        for (let i = 1; i <= 28; i++) {
-            const ringId = 'ring' + i;
-            const ringData = rings[i.toString()] || null; // Default to null if no data exists for this ring
-            const ringElement = document.getElementById(ringId);
+                // Iterate through all 28 rings (from 1 to 28)
+                for (let i = 1; i <= 28; i++) {
+                    const ringId = 'ring' + i;
+                    const ringElement = document.getElementById(ringId);
 
-            // Set default values if no data for this ring
-            if (ringData) {
-                // Update the content of the ring
-                ringElement.innerHTML = `Ring ${i}<br>${ringData.status}<br>${ringData.time}`;
-                
-                // Set ring color based on the status
-                switch (ringData.status) {
-                    case 'OPEN':
-                    case 'EXTREME':
-                        ringElement.style.backgroundColor = '#4caf50'; // Green
-                        break;
-                    case 'FORMS':
-                    case 'WEAPONS':
-                    case 'COMBAT':
-                        ringElement.style.backgroundColor = '#f44336'; // Red
-                        break;
-                    case 'SPARRING':
-                    case 'CREATIVE':
-                        ringElement.style.backgroundColor = '#ff9800'; // Orange
-                        break;
-                    default:
-                        ringElement.style.backgroundColor = '#f0f0f0'; // Default gray
+                    if (!ringElement) {
+                        console.error("Ring element not found:", ringId);
+                        continue;
+                    }
+
+                    const ringData = rings[i.toString()] || null; // Default to null if no data exists for this ring
+
+                    // Set default values if no data for this ring
+                    if (ringData) {
+                        // Update the content of the ring
+                        ringElement.innerHTML = `Ring ${i}<br>${ringData.status}<br>${ringData.time}`;
+                        
+                        // Set ring color based on the status
+                        switch (ringData.status) {
+                            case 'OPEN':
+                            case 'EXTREME':
+                                ringElement.style.backgroundColor = '#4caf50'; // Green
+                                break;
+                            case 'FORMS':
+                            case 'WEAPONS':
+                            case 'COMBAT':
+                                ringElement.style.backgroundColor = '#f44336'; // Red
+                                break;
+                            case 'SPARRING':
+                            case 'CREATIVE':
+                                ringElement.style.backgroundColor = '#ff9800'; // Orange
+                                break;
+                            default:
+                                ringElement.style.backgroundColor = '#f0f0f0'; // Default gray
+                        }
+                    } else {
+                        // If no data exists for the ring, display "Empty" and set a default color
+                        ringElement.innerHTML = `Ring ${i}<br>Empty<br>--:-- AM`;
+                        ringElement.style.backgroundColor = '#f0f0f0'; // Light gray (indicating no status)
+                    }
                 }
-            } else {
-                // If no data exists for the ring, display "Empty" and set a default color
-                ringElement.innerHTML = `Ring ${i}<br>Empty<br>--:-- AM`;
-                ringElement.style.backgroundColor = '#f0f0f0'; // Light gray (indicating no status)
-            }
-        }
-    });
-};
+            }).catch(function(error) {
+                console.error("Error fetching Firebase data:", error);
+            });
+        };
 
         // Attach event listeners to all rings
         document.addEventListener("DOMContentLoaded", function() {
@@ -178,4 +194,22 @@ window.onload = function() {
         <div class="ring" id="ring10">Ring 10</div>
         <div class="ring" id="ring11">Ring 11</div>
         <div class="ring" id="ring12">Ring 12</div>
-        <div class="ring" id="rin
+        <div class="ring" id="ring13">Ring 13</div>
+        <div class="ring" id="ring14">Ring 14</div>
+        <div class="ring" id="ring15">Ring 15</div>
+        <div class="ring" id="ring16">Ring 16</div>
+        <div class="ring" id="ring17">Ring 17</div>
+        <div class="ring" id="ring18">Ring 18</div>
+        <div class="ring" id="ring19">Ring 19</div>
+        <div class="ring" id="ring20">Ring 20</div>
+        <div class="ring" id="ring21">Ring 21</div>
+        <div class="ring" id="ring22">Ring 22</div>
+        <div class="ring" id="ring23">Ring 23</div>
+        <div class="ring" id="ring24">Ring 24</div>
+        <div class="ring" id="ring25">Ring 25</div>
+        <div class="ring" id="ring26">Ring 26</div>
+        <div class="ring" id="ring27">Ring 27</div>
+        <div class="ring" id="ring28">Ring 28</div>
+    </div>
+</body>
+</html>
