@@ -7,9 +7,29 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-   
+   <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
 
     <script>
+
+        // Your Firebase configuration
+var firebaseConfig = {
+  apiKey: "AIzaSyBa7CfejKs6jApm_u6qKdxeZozg-b8agyk",
+  authDomain: "atarings00.firebaseapp.com",
+  databaseURL: "https://atarings00-default-rtdb.firebaseio.com",
+  projectId: "atarings00",
+  storageBucket: "atarings00.firebasestorage.app",
+  messagingSenderId: "981428477768",
+  appId: "1:981428477768:web:ce13879472db8df2349d7d",
+  measurementId: "G-93M7Q2CJVB"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Get a reference to the database
+var database = firebase.database();
     let selectedRingId = null;
 
     // Function to open popup
@@ -39,7 +59,28 @@ function updateStatus() {
 
     // Update the ring text to show status and time
     ring.innerHTML = `Ring ${selectedRingId.replace('ring', '')}<br>${selectedStatus}<br>${formattedTime}`;
+
+        // Save the ring's status and timestamp to Firebase
+    const ringId = selectedRingId.replace('ring', '');  // Get the ring number (1, 2, etc.)
+    const ringData = {
+        status: selectedStatus,
+        time: formattedTime
+    };
     
+    // Update Firebase database with the ring's new status and time
+    database.ref('rings/' + ringId).set(ringData);
+
+    // Function to load the ring data from Firebase when the page loads
+window.onload = function() {
+    // Get all ring data from Firebase
+    database.ref('rings').once('value').then(function(snapshot) {
+        const rings = snapshot.val();
+
+        // Loop through each ring and update its display based on the saved data
+        for (let ringId in rings) {
+            const ringData = rings[ringId];
+            const ringElement = document.getElementById('ring' + ringId);
+            
     // Update color based on selected status
     switch (selectedStatus) {
         case 'OPEN':
