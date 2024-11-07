@@ -99,9 +99,10 @@
             closePopup();
         }
 
-        // Fetch data from Firebase when the page loads
-        window.onload = function() {
-            database.ref('rings').once('value').then(function(snapshot) {
+        // Real-time update from Firebase
+        function listenForRingUpdates() {
+            // Listen to changes in the 'rings' node in Firebase
+            database.ref('rings').on('value', function(snapshot) {
                 const rings = snapshot.val() || {}; // Default to empty object if no data exists
 
                 // Iterate through all 28 rings (from 1 to 28)
@@ -145,9 +146,12 @@
                         ringElement.style.backgroundColor = '#f0f0f0'; // Light gray (indicating no status)
                     }
                 }
-            }).catch(function(error) {
-                console.error("Error fetching Firebase data:", error);
             });
+        }
+
+        // Initialize real-time data listener on page load
+        window.onload = function() {
+            listenForRingUpdates();
         };
 
         // Attach event listeners to all rings
