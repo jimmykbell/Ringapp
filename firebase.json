@@ -1,0 +1,121 @@
+{
+  "rings": {
+    "1": {
+      "status": "OPEN",
+      "time": "10:00 AM"
+    },
+    "2": {
+      "status": "FORMS",
+      "time": "10:15 AM"
+    },
+    "3": {
+      "status": "SPARRING",
+      "time": "10:30 AM"
+    },
+    "4": {
+      "status": "OPEN",
+      "time": "10:45 AM"
+    },
+    "5": {
+      "status": "CREATIVE",
+      "time": "11:00 AM"
+    },
+    "6": {
+      "status": "COMBAT",
+      "time": "11:15 AM"
+    },
+    "7": {
+      "status": "OPEN",
+      "time": "11:30 AM"
+    },
+    "8": {
+      "status": "EXTREME",
+      "time": "11:45 AM"
+    },
+    "9": {
+      "status": "SPARRING",
+      "time": "12:00 PM"
+    },
+    "10": {
+      "status": "FORMS",
+      "time": "12:15 PM"
+    },
+    "11": {
+      "status": "WEAPONS",
+      "time": "12:30 PM"
+    },
+    "12": {
+      "status": "COMBAT",
+      "time": "12:45 PM"
+    },
+    "13": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+    "14": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "15": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "16": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "17": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "18": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "19": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "20": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "21": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "22": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "23": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "24": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "25": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "26": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "27": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+        "28": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    },
+    // Add rings 15 through 28 in a similar way...
+    "28": {
+      "status": "Empty",
+      "time": "--:-- AM"
+    }
+  }
+}
