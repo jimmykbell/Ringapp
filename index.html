@@ -94,16 +94,20 @@
 // Fetch data from Firebase when the page loads
 window.onload = function() {
     database.ref('rings').once('value').then(function(snapshot) {
-        const rings = snapshot.val();
-        
+        const rings = snapshot.val() || {}; // If no data, default to empty object
+
         // Iterate through all 28 rings (from 1 to 28)
         for (let i = 1; i <= 28; i++) {
             const ringId = 'ring' + i;
-            const ringData = rings ? rings[i.toString()] : null;
+            const ringData = rings[i.toString()] || null; // Default to null if no data exists for this ring
             const ringElement = document.getElementById(ringId);
-            
+
+            // Set default values if no data for this ring
             if (ringData) {
+                // Update the content of the ring
                 ringElement.innerHTML = `Ring ${i}<br>${ringData.status}<br>${ringData.time}`;
+                
+                // Set ring color based on the status
                 switch (ringData.status) {
                     case 'OPEN':
                     case 'EXTREME':
@@ -118,11 +122,13 @@ window.onload = function() {
                     case 'CREATIVE':
                         ringElement.style.backgroundColor = '#ff9800'; // Orange
                         break;
+                    default:
+                        ringElement.style.backgroundColor = '#f0f0f0'; // Default gray
                 }
             } else {
-                // If no data exists for this ring, clear the contents
+                // If no data exists for the ring, display "Empty" and set a default color
                 ringElement.innerHTML = `Ring ${i}<br>Empty<br>--:-- AM`;
-                ringElement.style.backgroundColor = '#f0f0f0'; // Light gray (or any color indicating 'no data')
+                ringElement.style.backgroundColor = '#f0f0f0'; // Light gray (indicating no status)
             }
         }
     });
